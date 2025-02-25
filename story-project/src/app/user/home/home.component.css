@@ -1,0 +1,144 @@
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #0f0f0f, #1a1a2e);
+    font-family: 'Poppins', sans-serif;
+}
+
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in-out;
+}
+
+.logo {
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.logo:hover {
+    transform: scale(1.1);
+}
+
+
+.prime {
+    background: linear-gradient(45deg, #ff5722, #ff9800);
+    border: none;
+    padding: 12px 18px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 10px rgba(255, 87, 34, 0.6);
+}
+
+.prime:hover {
+    opacity: 0.85;
+    box-shadow: 0 0 20px rgba(255, 87, 34, 0.9);
+}
+
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-bar {
+    padding: 8px 12px;
+    border-radius: 7px;
+    border: 1px solid black;
+    outline: none;
+    font-size: 14px;
+    width: 180px;
+    transition: 0.3s;
+}
+
+.search-bar:focus {
+    width: 250px;
+}
+
+
+.profile img {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.profile img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.dropdown-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    padding: 10px;
+    display: inline-block;
+    transition: color 0.3s;
+    color: #ff9800;
+}
+
+.dropdown-label:hover {
+    color: #ff9800;
+}
+
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(44, 44, 61, 0.9);
+    border-radius: 10px;
+    width: 200px;
+    box-shadow: 0px 4px 12px rgba(255, 87, 34, 0.5);
+    z-index: 10;
+    overflow: hidden;
+    transform: translateY(-10px);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.3s, color 0.3s;
+}
+
+.dropdown-menu a:hover {
+    background: rgba(255, 87, 34, 0.8);
+    color: #fff;
+}
+
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    transform: translateY(0);
+    opacity: 1;
+}

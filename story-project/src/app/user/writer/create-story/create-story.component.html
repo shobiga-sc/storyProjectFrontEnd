@@ -13,7 +13,7 @@
 
 
             <button class="cancel">Cancel</button>
-            <button class="prime" routerLink="/user/write-story">Next</button>
+            <button class="prime" (click)="submitStory()">Next</button>
 
 
         </div>
@@ -49,13 +49,13 @@
 
         <form [formGroup]="storyForm" (ngSubmit)="submitStory()">
 
-            <label>Title:</label>
+            <label>Story Title:</label>
             <input type="text" formControlName="title" placeholder="Enter story title" required />
 
-            <label>Poster URL:</label>
-            <input type="text" formControlName="posterUrl" placeholder="Enter poster URL" required />
+            <!-- <label>Poster URL:</label>
+            <input type="text" formControlName="posterUrl" placeholder="Enter poster URL" required /> -->
 
-            <label>Summary:</label>
+            <label>Story Summary:</label>
             <textarea formControlName="summary" placeholder="Enter summary"></textarea>
 
 
@@ -68,8 +68,7 @@
         <label>Author Name:</label>
         <input type="text" formControlName="authorName" required /> -->
 
-            <label>Paid Story:</label>
-            <input type="checkbox" formControlName="isPaid" />
+          
 
             <label for="genre">Genre:</label>
             <select id="genre" formControlName="genre" (click)="showGenres = true" (change)="onGenreChange($event)"
@@ -85,26 +84,38 @@
 
             <label>Tags:</label>
             <div class="tag-input">
-                <input type="text" [(ngModel)]="newTag" placeholder="Enter tag" #tagInput />
-                <button type="button" (click)="addTag(tagInput)">Add</button>
+                <input type="text" formControlName="newTag" placeholder="Enter tag" #tagInput  class="tag-input"/>
+                <img src="plus.png" alt="add button" (click)="addTag(tagInput)" class="tag-add">
             </div>
             
-            <!-- Display Added Tags -->
+           
             <div class="tag-list">
-                <span *ngFor="let tag of tags.controls; let i = index" class="tag">
-                    {{ tag.value }} 
-                    <button type="button" (click)="removeTag(i)">X</button>
-                </span>
+                <div *ngFor="let tag of tags.controls; let i = index" class="tag">
+                  <div>{{ tag.value }}</div>
+                  <img src="clear.png" alt="delete button" (click)="removeTag(i)" class="tag-delete">
+                </div>
+              </div>
+              
+              <div class="radio-group">
+                <label>Paid Story:</label>
+                <div class="radio-options">
+                    <label>
+                        <input type="radio" formControlName="isPaid" [value]="true" /> Yes
+                    </label>
+                    <label>
+                        <input type="radio" formControlName="isPaid" [value]="false" /> No
+                    </label>
+                </div>
             </div>
             
-            <label>
-                <input type="checkbox" formControlName="isPaid" /> Paid Story
-            </label>
-
+            
         </form>
 
     </div>
 </div>
+
+
+
 <!-- <div class="editor">
     <h3>Write Story here</h3> 
    

@@ -11,9 +11,9 @@
             
            
             
-            <button class="prime">Save</button>
+            <button class="prime" (click)="saveContent()">Save</button>
             <button class="cancel">Cancel</button>
-            <button class="prime">Publish</button>
+            <button class="prime" (click)="onPublish()">Publish</button>
 
        
         </div>
@@ -40,9 +40,14 @@
       <i class="fas fa-list-ul"></i>
     </button>
 
+
     <button (click)="editor.chain().focus().toggleOrderedList().run()" title="Ordered List">
       <i class="fas fa-list-ol"></i>
     </button>
+    <img src="left.png" alt = "left align" (click)="setAlignment('left')" class="align">
+    <img src="center.png" alt = "left align" (click)="setAlignment('center')" class="align">
+    <img src="right.png" alt = "left align" (click)="setAlignment('right')" class="align">
+  
     <div>
         <label>Font Size: </label>
     <select (change)="setFontSize($event)">
@@ -54,6 +59,7 @@
     </select>   
     </div>   
 <div>
+
     <label>Text Color: </label>
     <input type="color" (change)="setTextColor($event)" />
     </div>
@@ -64,7 +70,10 @@
       </label>
 </div>
 
+
+
 </div>
 </div>
 <div #editorContainer class="tiptap-editor"></div>
 </div>
+

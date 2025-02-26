@@ -1,8 +1,35 @@
-<div>
-<img src="logo.jpg" width="200px" height="100px">
+<div class="container">
+    
+    <div class="login-section">
+        <div class="logo-container">
+            <img src="logo.jpg" class="logo">
+        </div>
+        <div class="signin">
+            <h3>Sign Up</h3>
+            <form>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your Username" [(ngModel)]="username" required />
+            
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" [(ngModel)]="password" required />
 
-<form>
-    <label for="name">Name</label>
-    <input id="name" type="text">
-</form>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your Email" [(ngModel)]="email" required />
+            
+            <div class="login-btn-container">
+                <button class="login-btn" (click)="signup(); $event.preventDefault()">Sign Up</button>
+            </div>
+            </form>
+        </div>
+    </div>
+
+   
+    <div class="signup-section">
+        <h1>Already have an account?</h1>
+        <h5>Sign In and Enjoy new Exciting stories !</h5>
+        
+        <div class="signup-btn-container">
+            <button class="signup-btn" routerLink="">Sign In</button>
+        </div>
+    </div>
 </div>

@@ -3,17 +3,22 @@ import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import Link from '@tiptap/extension-link';
-import Image from '@tiptap/extension-image';
+import ImageExtension from '@tiptap/extension-image';
 import TextStyle from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color'; 
 import BulletList from '@tiptap/extension-bullet-list';
 import OrderedList from '@tiptap/extension-ordered-list';
 import Heading from '@tiptap/extension-heading';
+import TextAlign from '@tiptap/extension-text-align';
 import { Extension } from '@tiptap/core';
+import { StoryContentService } from '../../../story-content.service';
+import { Story } from '../../../models/story.model';
+import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
+import { StoryApiService } from '../../../story-api.service';
 
 export const FontSize = Extension.create({
   name: 'fontSize',
-
   addGlobalAttributes() {
     return [
       {
@@ -33,18 +38,38 @@ export const FontSize = Extension.create({
   },
 });
 
+const CustomImage = ImageExtension.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      style: {
+        default: 'display: block; margin: auto; max-width: 100%; height: auto;',
+        parseHTML: (element) => element.getAttribute('style') || '',
+        renderHTML: (attributes) => ({ style: attributes['style'] }),
+      },
+    };
+  },
+});
 
 @Component({
   selector: 'app-tiptap-editor',
   standalone: true,
   templateUrl: './tiptap-editor.component.html',
-  styleUrl: './tiptap-editor.component.css'
+  styleUrls: ['./tiptap-editor.component.css']
 })
-
-export class TiptapEditorComponent {
+export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
+  
   editor!: Editor;
+  editorContent: string = ''; 
+  storyContent: string = '';
   @Output() contentChange = new EventEmitter<string>();
+  @Output() submitStory = new EventEmitter<void>(); 
   @ViewChild('editorContainer', { static: false }) editorContainer!: ElementRef;
+
+  constructor(private storyContentService: StoryContentService, 
+    private http: HttpClient,
+    private storyApiService: StoryApiService
+  ) {}
 
   ngOnInit(): void {
     this.editor = new Editor({
@@ -52,24 +77,28 @@ export class TiptapEditorComponent {
         StarterKit,
         Underline,
         Link.configure({ openOnClick: true }),
-        Image,
+        CustomImage,
         TextStyle,
-        Color, 
+        Color,
         BulletList,
         OrderedList,
         Heading.configure({ levels: [1, 2, 3] }),
-        FontSize, 
+        FontSize,
+        TextAlign.configure({ types: ['heading', 'paragraph'], alignments: ['left', 'center', 'right'] })
       ],
       content: '<p>Start typing...</p>',
-      onUpdate: ({ editor }) => {
-        this.contentChange.emit(editor.getHTML());
-      }
+      onUpdate: ({ editor }) => this.onUpdate(editor),
     });
   }
-  
+
+  onUpdate(editor: Editor) {
+    this.editorContent = editor.getHTML();
+    this.storyContent = this.editorContent;
+    this.contentChange.emit(this.editorContent);
+  }
 
   ngAfterViewInit(): void {
-    if (this.editorContainer) {
+    if (this.editorContainer && !this.editorContainer.nativeElement.contains(this.editor.view.dom)) {
       this.editorContainer.nativeElement.appendChild(this.editor.view.dom);
     }
   }
@@ -84,35 +113,100 @@ export class TiptapEditorComponent {
     this.editor.chain().focus().setMark('textStyle', { color }).run();
   }
 
+  setAlignment(alignment: string) {
+    this.editor.chain().focus().updateAttributes('paragraph', { textAlign: alignment }).run();
+  }
+
   uploadImage(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
-  
-    if (file) {
-      const reader = new FileReader();
-      const img = document.createElement('img'); 
-  
-      reader.onload = (e) => {
-        img.src = e.target?.result as string;
-  
-        img.onload = () => {
-          const maxWidth = 1000;
-          if (img.width > maxWidth) {
-            alert(`Image width should not exceed ${maxWidth}px. Your image width is ${img.width}px.`);
-          } else {
-          
-            this.editor.chain().focus().setImage({ src: img.src }).run();
-          }
-        };
-      };
-  
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload a valid image file.');
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const src = e.target?.result as string;
+      const img = new Image();
+      img.src = src;
+
+      img.onload = () => {
+        if (img.width > 1000) {
+          alert(`Image width should not exceed 1000px. Your image width is ${img.width}px.`);
+          return;
+        }
+
+        this.editor.chain().focus().setImage({ src }).run();
+
+        setTimeout(() => {
+          this.onUpdate(this.editor);
+        }, 100);
+      };
+    };
+
+    reader.readAsDataURL(file);
   }
-  
+
+  saveContent() {
+    const storyData = this.storyContentService.getStoryData();
+    if (!storyData) {
+      console.error('Error: No story data available!');
+      return;
+    }
+
+    storyData.status = "DRAFT";
+
+    const fullStory: Story = {
+      ...storyData,
+      content: this.storyContent.trim(),
+    };
+
+    console.log(fullStory);
+
+    // if (!fullStory.content) {
+    //   console.error('Error: Story content is empty!');
+    //   return;
+    // }
+
+    this.storyApiService.postStory(fullStory).subscribe(
+      data =>{ console.log(data);}
+    );
+  }
+
+  onPublish() {
+    const storyData = this.storyContentService.getStoryData();
+    if (!storyData) {
+      console.error('Error: No story data available!');
+      return;
+    }
+    storyData.status = "PUBLISHED";
+
+
+    const fullStory: Story = {
+      ...storyData,
+      content: this.storyContent.trim(),
+    };
+
+    console.log(fullStory);
+
+    // if (!fullStory.content) {
+    //   console.error('Error: Story content is empty!');
+    //   return;
+    // }
+
+    this.storyApiService.postStory(fullStory).subscribe(
+      data =>{ console.log(data);}
+    );
+   
+
+
+
+    
+  }
 
   ngOnDestroy(): void {
-    if (this.editor) {
-      this.editor.destroy();
-    }
+    this.editor?.destroy();
   }
 }

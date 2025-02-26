@@ -1,3 +1,32 @@
-<div>
-    <div ><img src="logo.jpg" width="200px" height="100px" routerLink="sign-up" ></div>
+<div class="container">
+    <!-- Login Section -->
+    <div class="login-section">
+        <div class="logo-container">
+            <img src="logo.jpg" class="logo">
+        </div>
+        <div class="signin">
+            <h3>Login</h3>
+            <form (submit)="login()">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your Username"  [(ngModel)]="username" required />
+            
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password"  [(ngModel)]="password" required />
+            
+            <div class="login-btn-container">
+                <button class="login-btn">Login</button>
+            </div>
+        </form>
+        </div>
+    </div>
+
+    <!-- Sign-Up Section -->
+    <div class="signup-section">
+        <h1>New Here?</h1>
+        <h5>Sign up and Enjoy new Exciting stories</h5>
+        
+        <div class="signup-btn-container">
+            <button class="signup-btn" routerLink="sign-up">Sign Up</button>
+        </div>
+    </div>
 </div>

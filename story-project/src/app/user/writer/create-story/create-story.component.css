@@ -239,5 +239,55 @@
 
 }
 
+.tag-input{
+  width: 600px;
+  display: flex;
+  gap: 10px
+  
+}
 
+.tag-add{
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
 
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px; 
+  margin-top: 10px;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: lightgray;
+  border-radius: 5px;
+}
+
+.tag-delete {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.radio-group {
+  display: flex;
+  align-items: center; /* Aligns everything in a straight line */
+  gap: 10px; /* Space between elements */
+}
+
+.radio-options {
+  display: flex;
+  gap: 15px; /* Space between Yes and No */
+}
+
+.radio-options label {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Space between radio button and text */
+  cursor: pointer;
+}

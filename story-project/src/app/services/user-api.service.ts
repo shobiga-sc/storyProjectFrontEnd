@@ -20,11 +20,6 @@ export class UserApiService {
     return this.http.get<User>(`${this.baseUrl}/api/user/${userId}`);
    }
 
-   getMonthlyViews(authorId: string, year: number, month: number): Observable<Record<string, number>> {
-    return this.http.get<Record<string, number>>(
-      `${this.baseUrl}/analytics/author/${authorId}/monthly-views`,
-      { params: { year: year.toString(), month: month.toString() } }
-    );
-  }
+ 
 
 }

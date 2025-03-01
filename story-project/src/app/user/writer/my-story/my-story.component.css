@@ -1,3 +1,12 @@
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+
 .navbar {
     display: flex;
     align-items: center;
@@ -5,14 +14,9 @@
     padding: 15px 30px;
     border-radius: 15px;
     backdrop-filter: blur(12px);
-    background: rgba(255, 255, 255, 0.1);
-    background-color: white;
+    background: rgba(255, 255, 255, 0.9);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease-in-out;
-    /* position: fixed;
-    z-index: 1000;
-    width: 95%; */
-
 }
 
 .logo {
@@ -26,114 +30,133 @@
 }
 
 
-.prime {
-    background: rgb(255, 81, 18);
-    border: none;
-    padding: 12px 18px;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
- 
-}
-
-
-.nav-left, .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
 button {
-    background: rgb(255, 81, 18);
+    background: #ff5722;
     border: none;
     padding: 12px 18px;
-    color: #fff;
+    color: white;
     font-size: 16px;
     font-weight: bold;
     border-radius: 8px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease-in-out;
     box-shadow: 0 0 10px rgba(255, 87, 34, 0.6);
     min-width: 100px;
-  }
+}
 
- .container{
+button:hover {
+    background: #e64a19;
+    transform: scale(1.05);
+}
+
+
+.container {
     margin: auto;
-    width: 1200px;
-    align-items: center;
+    max-width: 1200px;
     padding: 30px;
-    /* margin-top: 100px; */
-
-
-
-    /* background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease-in-out; */
     display: flex;
     flex-direction: column;
     gap: 20px;
     border-radius: 20px;
+}
 
-    
- }
- .status{
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+h3 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    color: #ff5722;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 15px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid #ff5722;
+}
+
+h5 {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+
+.status {
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
     padding: 20px;
     width: 100%;
     border-radius: 20px;
-    
- }
+}
 
- .stories {
+/* .status:hover {
+    transform: scale(1.02);
+} */
+
+
+.stories {
     display: flex;
     flex-wrap: wrap; 
-    gap: 5px; 
-   
+    gap: 15px;
+  
+    transition: all 0.3s ease-in-out;
+    justify-content: center;
 }
- .card{
-    width: 150px;
+
+.card {
+    width: 170px;
     position: relative;
     cursor: pointer;
-
-    margin: 10px 5px;
- }
-
- .card .poster{
-    width: 150px;
-   
-   
+    margin: 10px;
     border-radius: 15px;
- }
+    transition: transform 0.3s ease-in-out;
+}
 
- .card p{
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card .poster {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.card p {
     text-align: center;
-    font-size: small;
+    font-size: 14px;
+    font-weight: bold;
+    background: #ff5722;
+    color: white;
+    padding: 5px;
     border-radius: 6px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
- }
-
-
- .bg {
-    width: 100%;
-    height: auto;
-    border-radius: 15px;
 }
 
 .top {
     position: absolute;
-    top: 2px; 
-    left: 2px;
-    width: 20px; 
+    top: 5px; 
+    left: 5px;
+    width: 25px; 
     z-index: 2; 
     padding: 5px;
-    border-radius: 20px;
-    background-color: #fffbfb;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-
+h5 {
+    font-size: 20px;
+    color: #ff5722;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px;
+    margin: 20px 0 10px;
+    border-left: 6px solid #ff5722;
+    background: rgba(255, 87, 34, 0.1);
+    border-radius: 5px;
+}
 

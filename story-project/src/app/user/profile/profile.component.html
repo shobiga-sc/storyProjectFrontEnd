@@ -1,1 +1,64 @@
-<p>profile works!</p>
+<div class="container">
+
+    <div class="profile-card">
+        <div class="profile-image">
+            <img src="user.png" alt="Profile Picture">
+        </div>
+        <div class="profile-details">
+            <h2>{{ user?.username }}'s Profile</h2>
+            <h6>{{ user?.email }}</h6>
+            <div class="follow">
+                <div class="follow-box">
+                    <p><strong>Followers</strong></p>
+                    <p class="count">{{followersCount}}</p>
+                </div>
+                <div class="follow-box">
+                    <p><strong>Following</strong></p>
+                    <p class="count">{{followingCount}}</p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+
+    <div class="bottom-section">
+
+        <div class="views-card">
+            <p><strong>Reads for {{ getMonthName(month) }} {{ year }}:</strong></p>
+            <div class="filters">
+
+                <label for="month">Select Month:</label>
+                <select id="month" (change)="onMonthChange($event)">
+                    <option *ngFor="let m of months" [value]="m.value" [selected]="m.value === month">{{ m.name }}
+                    </option>
+                </select>
+
+                <label for="year">Select Year:</label>
+                <select id="year" (change)="onYearChange($event)">
+                    <option *ngFor="let y of years" [value]="y" [selected]="y === year">{{ y }}</option>
+                </select>
+            </div>
+
+            <ul class="views-list">
+                <li>
+                    <span class="icon paid-icon">💰</span>
+                    <strong>Paid Reads:</strong> <span class="paid-value">{{ monthlyViews.paid }}</span>
+                </li>
+                <li>
+                    <span class="icon unpaid-icon">📖</span>
+                    <strong>Unpaid Reads:</strong> <span class="unpaid-value">{{ monthlyViews.unpaid }}</span>
+                </li>
+            </ul>
+
+        </div>
+
+
+        <div class="action-cards">
+
+            <div class="writes" routerLink="/user/my-story">Writings</div>
+            <div class="saved-stories" routerLink="/user/saved-stories">Saved Stories</div>
+            <div class="saved-stories"> Delete Account</div>
+        </div>
+    </div>
+</div>

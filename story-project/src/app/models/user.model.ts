@@ -4,7 +4,7 @@ export interface User {
     email: string;
     password: string;
     roles: string[]; 
-    isPrimeSubscriber: boolean;
+    primeSubscriber: boolean;
     primeSubscriptionExpiry: string | null; 
     followedAuthors: string[];
   }

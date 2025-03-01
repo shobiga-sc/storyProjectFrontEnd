@@ -42,6 +42,10 @@ export class StoryApiService {
     return this.http.delete(`${this.baseUrl}/api/savedStory/delete/${userId}/${storyId}`);
   }
 
+  getSavedStories(userId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/api/savedStory/${userId}`);
+  }
+
   likeStory(userId: string, storyId: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/api/likes/like`, { userId, storyId });
   }
@@ -60,7 +64,7 @@ export class StoryApiService {
   }
   
   getAuthorMonthlyReads(authorId: string, year: number, month: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/api/reads/author/${authorId}/monthly?year=${year}&month=${month}`);
+    return this.http.get(`${this.baseUrl}/api/reads/author/${authorId}/monthly/${year}/${month}`);
   }
   
 
@@ -68,7 +72,5 @@ export class StoryApiService {
     return this.http.get<number>(`${this.baseUrl}/api/reads/${storyId}`);
   }
   
-  // trackRead(userId: string, storyId: string): Observable<number> {
-  //   return this.http.post<number>(`${this.baseUrl}/api/story/${storyId}/read?userId=${userId}`, {});
-  // }
+
 }

@@ -27,13 +27,13 @@
                         <p *ngIf="isLiked">Liked</p>
                             <p *ngIf="!isLiked">Like</p>
                       </div>
-                      <div>
+                      <div title="Reads">
                         <img src="open-book.png" alt="Reads" class="icons">
-                        <p title="Reads">{{ totalReads }}</p>
+                        <p >{{ totalReads }}</p>
                      </div>
-                      <div>
+                      <div title="Likes">
                         <img src="like.png" alt="like" class="icons">
-                        <p title="Likes">{{likeCount}}</p>
+                        <p >{{likeCount}}</p>
                      </div>
                      <div>
                         <img 
@@ -56,7 +56,15 @@
                        
                      </div>
                      <div>
-                        <button class="button-34">Follow Author</button>
+                        
+                        <button *ngIf="userId !== (story?.authorId || '')"  
+                        (click)="toggleFollow(story?.authorId || '', userId)" 
+                        class="button-34"
+                        title="{{ following ? 'following' : 'Click to follow' }}">
+                    {{ following ? 'Unfollow' : 'Follow' }}
+                </button>
+                                     
+                        
                      </div>
                 </div>
                 <div class="read-story">

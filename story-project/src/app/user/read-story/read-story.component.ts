@@ -4,6 +4,7 @@ import { Story } from '../../models/story.model';
 import { StoryApiService } from '../../services/story-api.service';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { FollowService } from '../../services/follow.service';
 
 @Component({
   selector: 'app-read-story',
@@ -22,13 +23,15 @@ export class ReadStoryComponent {
    isLiked = false;
    likeCount: number = 0;
    totalReads: number = 0;
+   following: boolean = false;
 
 
 
 
    constructor(
     private route: ActivatedRoute,
-    private storyApiService: StoryApiService
+    private storyApiService: StoryApiService,
+    private followService: FollowService
    ){}
 
    ngOnInit(){
@@ -39,6 +42,10 @@ export class ReadStoryComponent {
         this.story = data;
         this.likeCount = data.likeCount ?? 0;
         this.getTotalReads();
+
+        if (this.story && this.story.authorId) {
+          this.checkFollowingStatus(this.story.authorId, this.userId);
+        }
       } 
       ,(error) => {
         console.error('Error fetching story:', error);
@@ -51,6 +58,36 @@ export class ReadStoryComponent {
     this.checkIfLiked();
    
    }
+
+   toggleFollow(authorId: string, userId: string): void {
+    if (!authorId || !userId) return;
+  
+    if (!this.following) {
+      this.followService.followAuthor(authorId, userId).subscribe(
+        () => {
+          this.following = true;
+          
+        },
+        (error) => console.error('Error following author', error)
+      );
+    } else {
+      this.followService.unfollowAuthor(authorId, userId).subscribe(
+        () => {
+          this.following = false;
+         
+        },
+        (error) => console.error('Error unfollowing author', error)
+      );
+    }
+  }
+  
+  
+
+  checkFollowingStatus(authorId: string, userId: string) {
+    this.followService.isFollowing(authorId, userId).subscribe((status: boolean) => {
+      this.following = status;
+    });
+  }
 
    getTotalReads() {
     this.storyApiService.getTotalReads(this.storyId).subscribe(

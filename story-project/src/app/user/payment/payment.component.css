@@ -1,0 +1,17 @@
+.prime {
+    background: linear-gradient(45deg, #ff5722, #ff9800);
+    border: none;
+    padding: 12px 18px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 10px rgba(255, 87, 34, 0.6);
+}
+
+.prime:hover {
+    opacity: 0.85;
+    box-shadow: 0 0 20px rgba(255, 87, 34, 0.9);
+}

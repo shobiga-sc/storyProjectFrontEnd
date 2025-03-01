@@ -9,6 +9,7 @@ import { ReadStoryComponent } from './read-story/read-story.component';
 import { FullStoryComponent } from './full-story/full-story.component';
 import { PaymentComponent } from './payment/payment.component';
 import { ProfileComponent } from './profile/profile.component';
+import { SavedStoriesComponent } from './saved-stories/saved-stories.component';
 
 
 
@@ -16,7 +17,7 @@ import { ProfileComponent } from './profile/profile.component';
   declarations: [],
   imports: [
     CommonModule, HomeComponent, CreateStoryComponent, TiptapEditorComponent, MyStoryComponent, 
-    ReadStoryComponent, FullStoryComponent, PaymentComponent, ProfileComponent,
+    ReadStoryComponent, FullStoryComponent, PaymentComponent, ProfileComponent, SavedStoriesComponent,
     RouterModule.forChild([
       { path: "", component: HomeComponent },
       { path: "new-story", component: CreateStoryComponent },
@@ -26,6 +27,7 @@ import { ProfileComponent } from './profile/profile.component';
       {path: "full-story/:id", component: FullStoryComponent},
       {path: "payment", component: PaymentComponent},
       {path: "profile", component: ProfileComponent},
+      {path: "saved-stories", component: SavedStoriesComponent},
     ])
   ]
 })

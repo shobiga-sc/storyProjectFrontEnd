@@ -16,8 +16,9 @@
         </div>
       
         <div class="nav-right">
-            <app-payment *ngIf="user && !user.isPrimeSubscriber" [userId]="user.id"></app-payment>
-
+            <app-payment *ngIf="user && !user.primeSubscriber" [userId]="user.id"></app-payment>
+            <div class="prime" *ngIf="user && user.primeSubscriber">You are a Prime Subscriber</div>
+            
 
        
             <div class="dropdown">
@@ -43,7 +44,7 @@
     </nav>
 
     <div class="container">
-        
+        <h5>Explore Stories 📝</h5>   
         <div class="status">
           
             <div class="stories">

@@ -4,9 +4,9 @@ import { QuillModule } from 'ngx-quill';
 import { CommonModule } from '@angular/common';
 import { TiptapEditorComponent } from '../tiptap-editor/tiptap-editor.component';
 import { Router } from '@angular/router';
-import { StoryContentService } from '../../../story-content.service';
+import { StoryContentService } from '../../../services/story-content.service'; 
 import { User } from '../../../models/user.model';
-import { UserApiService } from '../../../user-api.service';
+import { UserApiService } from '../../../services/user-api.service'; 
 import { Story } from '../../../models/story.model';
 
 @Component({

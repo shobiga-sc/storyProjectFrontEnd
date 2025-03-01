@@ -1,4 +1,4 @@
-<div class="container">
+<div class="top-container">
     <nav class="navbar">
         <div class="nav-left">
             <img class="logo" src="logo.jpg" alt="App Logo">
@@ -12,24 +12,53 @@
                 </div>
             </div>
 
-            <input type="text" class="search-bar" placeholder="Search...">
+            <input type="text" class="search-bar" placeholder="🔍 Search...">
         </div>
       
         <div class="nav-right">
-            <button class="prime">Try Prime</button>
+            <app-payment *ngIf="user && !user.isPrimeSubscriber" [userId]="user.id"></app-payment>
+
 
        
             <div class="dropdown">
                 <span class="dropdown-label">Writer ▼</span>
                 <div class="dropdown-menu">
                     <a routerLink="new-story">Write a new Story +</a>
-                    <a href="#">My Stories</a>
+                    <a routerLink="my-story">My Stories 📝</a>
                 </div>
             </div>
-        
-            <div class="profile">
-                <img src="profile.jpg" alt="Profile Picture">
+
+            <div class="dropdown">
+                <img src="user.png" alt="Profile Picture" class="dropdown-label profile-image">
+                <!-- <p>{{user?.username}}</p> -->
+                <div class="dropdown-menu-profile">
+                    <a (click)="navigateTo('profile')">View Profile</a>
+                    <a (click)="navigateTo('saved-stories')">Saved Stories </a>
+                    <a (click)="logout()">  <span>Logout 🔓</span></a>
+                </div>
             </div>
+
+            
         </div>
     </nav>
+
+    <div class="container">
+        
+        <div class="status">
+          
+            <div class="stories">
+                <div *ngFor="let story of stories" class="card" [routerLink] = "['/user/read-story', story.id]">
+                    <div class="prime-div">
+                        <img *ngIf="story.paid" src="prime.png" alt="prime" class="prime-logo top">
+                        <img src="{{story.posterUrl}}" alt="story poster" class="bg poster">
+                        <div>
+                            <p>{{story.genre}}</p>
+                        </div>
+                    </div>
+    
+                </div>
+              
+            </div>
+        </div>
+    </div>
 </div>

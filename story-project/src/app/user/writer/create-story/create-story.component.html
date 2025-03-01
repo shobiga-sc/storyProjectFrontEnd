@@ -2,41 +2,33 @@
     <nav class="navbar">
         <div class="nav-left">
             <img class="logo" src="logo.jpg" alt="App Logo">
-
-
-
         </div>
 
         <div class="nav-right">
 
-
-
-
             <button class="cancel">Cancel</button>
             <button class="prime" (click)="submitStory()">Next</button>
-
-
         </div>
     </nav>
 </div>
 
-<!-- <h2 class='header'>Story Details</h2> -->
+
 
 <div class="details">
     <div class="cover">
         <label class="file-input-label" title="Upload cover image">
             <input type="file" (change)="onFileSelected($event)" accept="image/*" hidden />
 
-            <!-- Upload Icon & Text (Only shown when no image is selected) -->
+
             <img *ngIf="!coverImageUrl" src="image.png" alt="Upload Icon" class="upload-icon" />
             <p *ngIf="!coverImageUrl" style="color: rgb(102, 102, 102);">Add a cover image +</p>
         </label>
 
-        <!-- Cover Preview (Only shown when an image is uploaded) -->
+
         <div class="cover-preview-container" *ngIf="coverImageUrl">
             <img [src]="coverImageUrl" alt="Cover Preview" class="cover-preview" />
 
-            <!-- Remove Button -->
+
             <button class="remove-btn" (click)="removeImage()">✖</button>
         </div>
     </div>
@@ -68,7 +60,7 @@
         <label>Author Name:</label>
         <input type="text" formControlName="authorName" required /> -->
 
-          
+
 
             <label for="genre">Genre:</label>
             <select id="genre" formControlName="genre" (click)="showGenres = true" (change)="onGenreChange($event)"
@@ -84,19 +76,19 @@
 
             <label>Tags:</label>
             <div class="tag-input">
-                <input type="text" formControlName="newTag" placeholder="Enter tag" #tagInput  class="tag-input"/>
+                <input type="text" formControlName="newTag" placeholder="Enter tag" #tagInput class="tag-input" />
                 <img src="plus.png" alt="add button" (click)="addTag(tagInput)" class="tag-add">
             </div>
-            
-           
+
+
             <div class="tag-list">
                 <div *ngFor="let tag of tags.controls; let i = index" class="tag">
-                  <div>{{ tag.value }}</div>
-                  <img src="clear.png" alt="delete button" (click)="removeTag(i)" class="tag-delete">
+                    <div>{{ tag.value }}</div>
+                    <img src="clear.png" alt="delete button" (click)="removeTag(i)" class="tag-delete">
                 </div>
-              </div>
-              
-              <div class="radio-group">
+            </div>
+
+            <div class="radio-group">
                 <label>Paid Story:</label>
                 <div class="radio-options">
                     <label>
@@ -107,8 +99,8 @@
                     </label>
                 </div>
             </div>
-            
-            
+
+
         </form>
 
     </div>

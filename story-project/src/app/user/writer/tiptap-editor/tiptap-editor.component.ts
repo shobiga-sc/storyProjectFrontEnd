@@ -11,12 +11,12 @@ import OrderedList from '@tiptap/extension-ordered-list';
 import Heading from '@tiptap/extension-heading';
 import TextAlign from '@tiptap/extension-text-align';
 import { Extension } from '@tiptap/core';
-import { StoryContentService } from '../../../story-content.service';
+import { StoryContentService } from '../../../services/story-content.service'; 
 import { Story } from '../../../models/story.model';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { StoryApiService } from '../../../story-api.service';
-
+import { StoryApiService } from '../../../services/story-api.service'; 
+import { Router } from '@angular/router';
 export const FontSize = Extension.create({
   name: 'fontSize',
   addGlobalAttributes() {
@@ -62,13 +62,13 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   editor!: Editor;
   editorContent: string = ''; 
   storyContent: string = '';
-  @Output() contentChange = new EventEmitter<string>();
-  @Output() submitStory = new EventEmitter<void>(); 
+  // @Output() contentChange = new EventEmitter<string>();
   @ViewChild('editorContainer', { static: false }) editorContainer!: ElementRef;
 
   constructor(private storyContentService: StoryContentService, 
     private http: HttpClient,
-    private storyApiService: StoryApiService
+    private storyApiService: StoryApiService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -94,7 +94,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   onUpdate(editor: Editor) {
     this.editorContent = editor.getHTML();
     this.storyContent = this.editorContent;
-    this.contentChange.emit(this.editorContent);
+    // this.contentChange.emit(this.editorContent);
   }
 
   ngAfterViewInit(): void {
@@ -171,8 +171,15 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     // }
 
     this.storyApiService.postStory(fullStory).subscribe(
-      data =>{ console.log(data);}
+      data => {
+        console.log(data);
+        this.router.navigate(['/user/my-story']); 
+      },
+      error => {
+        console.error('Error:', error);
+      }
     );
+    
   }
 
   onPublish() {
@@ -197,9 +204,15 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     // }
 
     this.storyApiService.postStory(fullStory).subscribe(
-      data =>{ console.log(data);}
+      data => {
+        console.log(data);
+        this.router.navigate(['/user/my-story']); 
+      },
+      error => {
+        console.error('Error:', error);
+      }
     );
-   
+    
 
 
 

@@ -1,0 +1,78 @@
+<div class="top-container">
+
+    <nav>
+    </nav>
+
+    <div class="container">
+        <div class="about-story">
+            <div class="prime-div card">
+                <img *ngIf="story?.paid" src="prime.png" alt="prime" class="prime-logo top">
+                <img src="{{story?.posterUrl}}" alt="story poster" class="bg poster">
+                <!-- <div>
+                    <p>{{story?.genre}}</p>
+                </div> -->
+            </div>
+            <div class="story-data">
+                <h3 class="heading">{{story?.genre}} : {{story?.title}}</h3>
+                <div class="story-details">
+                     
+                     <div>
+                        <img 
+                          src="{{ isLiked ? 'liked.png' : 'heart.png' }}" 
+                          alt="Like Story" 
+                          class="icons" 
+                          title="{{ isLiked ? 'UnLike' : 'Like' }}" 
+                          (click)="toggleLikeStory()"
+                        >
+                        <p *ngIf="isLiked">Liked</p>
+                            <p *ngIf="!isLiked">Like</p>
+                      </div>
+                      <div>
+                        <img src="open-book.png" alt="Reads" class="icons">
+                        <p title="Reads">{{ totalReads }}</p>
+                     </div>
+                      <div>
+                        <img src="like.png" alt="like" class="icons">
+                        <p title="Likes">{{likeCount}}</p>
+                     </div>
+                     <div>
+                        <img 
+                            [src]="isSaved ? 'bookmark.png' : 'save.png'" 
+                            alt="Save Story" 
+                            class="icons" 
+                            title="{{ isSaved ? 'Unsave' : 'Save' }}" 
+                            (click)="toggleSaveStory()">
+
+                            <p *ngIf="isSaved">Saved</p>
+                            <p *ngIf="!isSaved">Save</p>
+                    </div>
+                    
+                
+                </div>
+                <div class="author-details">
+                    <div>
+                        <h6>Author Name:</h6>
+                        <p> {{story?.authorName}}</p>
+                       
+                     </div>
+                     <div>
+                        <button class="button-34">Follow Author</button>
+                     </div>
+                </div>
+                <div class="read-story">
+                    <!-- <button (click)="showStory()">Read Story</button> -->
+                    <button [routerLink] = "['/user/full-story', storyId]">Read Story</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="story-description">
+           <h5>Description</h5>
+           <p>{{story?.summary}}</p>
+    </div>
+
+    <div class="story-content" *ngIf="isStoryVisible"  [innerHTML]="story?.content">
+    </div>
+   
+</div>

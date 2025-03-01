@@ -1,0 +1,45 @@
+<div class="top-container">
+
+
+
+    <div class="container">
+        <div class="about-story">
+           
+            <div>
+                <h3>{{story?.genre}} : {{story?.title}}</h3>
+                <div class="story-details">
+                    <div>
+                        <img 
+                          src="{{ isLiked ? 'liked.png' : 'heart.png' }}" 
+                          alt="Like Story" 
+                          class="icons" 
+                          title="{{ isLiked ? 'UnLike' : 'Like' }}" 
+                          (click)="toggleLikeStory()"
+                        >
+                      </div>
+                   
+                     <div>
+                        <img src="report.png" alt="Report Story" class="icons" title="report">
+                     </div>
+
+                     <div>
+                        <img 
+                            [src]="isSaved ? 'bookmark.png' : 'save.png'" 
+                            alt="Save Story" 
+                            class="icons" 
+                            title="{{ isSaved ? 'Unsave' : 'Save' }}" 
+                            (click)="toggleSaveStory()">
+                    </div>
+                    
+                </div>
+            
+               
+            </div>
+        </div>
+    </div>
+
+  
+    <div class="story-content"   [innerHTML]="story?.content">
+    </div>
+   
+</div>

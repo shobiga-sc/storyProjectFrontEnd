@@ -1,0 +1,47 @@
+<div>
+<div>
+    <nav class="navbar">
+        <div class="nav-left">
+            <img class="logo" src="logo.jpg" alt="App Logo">
+        </div>
+
+        <div class="nav-right">
+            <button class="cancel">Back</button>
+
+        </div>
+    </nav>
+</div>
+
+<div class="container">
+    <h3>My Stories ✍</h3>
+    <div class="status">
+        <h5>Published Stories 📜</h5>
+        <div class="stories">
+            <div *ngFor="let story of publishedStories" class="card" [routerLink] = "['/user/read-story', story.id]">
+                <div class="prime-div">
+                    <img *ngIf="story.paid" src="prime.png" alt="prime" class="prime-logo top">
+                    <img src="{{story.posterUrl}}" alt="story poster" class="bg poster">
+                    <div>
+                        <p>{{story.genre}}</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="status">
+                <h5>Draft Stories 📝</h5>
+                <div class="stories">
+                    <div *ngFor="let story of draftStories" class="card" [routerLink] = "['/user/read-story', story.id]">
+                        <div class="prime-div">
+                            <img *ngIf="story.paid" src="prime.png" alt="prime" class="prime-logo top">
+                            <img src="{{story.posterUrl}}" alt="story poster" class="bg poster" >
+                            <div>
+                                <p>{{story.genre}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

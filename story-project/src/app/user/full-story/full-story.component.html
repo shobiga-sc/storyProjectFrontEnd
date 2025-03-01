@@ -4,42 +4,42 @@
 
     <div class="container">
         <div class="about-story">
-           
+
             <div>
                 <h3>{{story?.genre}} : {{story?.title}}</h3>
                 <div class="story-details">
                     <div>
-                        <img 
-                          src="{{ isLiked ? 'liked.png' : 'heart.png' }}" 
-                          alt="Like Story" 
-                          class="icons" 
-                          title="{{ isLiked ? 'UnLike' : 'Like' }}" 
-                          (click)="toggleLikeStory()"
-                        >
-                      </div>
-                   
-                     <div>
-                        <img src="report.png" alt="Report Story" class="icons" title="report">
-                     </div>
-
-                     <div>
-                        <img 
-                            [src]="isSaved ? 'bookmark.png' : 'save.png'" 
-                            alt="Save Story" 
-                            class="icons" 
-                            title="{{ isSaved ? 'Unsave' : 'Save' }}" 
-                            (click)="toggleSaveStory()">
+                        <img src="{{ isLiked ? 'liked.png' : 'heart.png' }}" alt="Like Story" class="icons"
+                            title="{{ isLiked ? 'UnLike' : 'Like' }}" (click)="toggleLikeStory()">
                     </div>
-                    
+
+                    <div>
+                        <img src="report.png" alt="Report Story" class="icons" title="report">
+                    </div>
+
+                    <div>
+                        <img [src]="isSaved ? 'bookmark.png' : 'save.png'" alt="Save Story" class="icons"
+                            title="{{ isSaved ? 'Unsave' : 'Save' }}" (click)="toggleSaveStory()">
+                    </div>
+
                 </div>
-            
-               
+
+
             </div>
         </div>
     </div>
 
-  
-    <div class="story-content"   [innerHTML]="story?.content">
+
+    <!-- <div class="story-content"   [innerHTML]="story?.content">
+    </div> -->
+
+    <div class="story-content" [innerHTML]="visibleContent"></div>
+    <div class="story-content" [ngClass]="{'blurred': shouldBlur}" [innerHTML]="hiddenContent"></div>
+
+    <div *ngIf="shouldBlur" class="blur-overlay">
+        <div (click)="showFullContent()" class="read-more">Subscribe to Prime to Read More</div>
+        <app-payment *ngIf="user && !user.primeSubscriber" [userId]="user.id"></app-payment>
     </div>
-   
+
+
 </div>

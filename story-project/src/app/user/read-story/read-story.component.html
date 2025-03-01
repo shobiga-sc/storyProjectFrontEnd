@@ -15,72 +15,69 @@
             <div class="story-data">
                 <h3 class="heading">{{story?.genre}} : {{story?.title}}</h3>
                 <div class="story-details">
-                     
-                     <div>
-                        <img 
-                          src="{{ isLiked ? 'liked.png' : 'heart.png' }}" 
-                          alt="Like Story" 
-                          class="icons" 
-                          title="{{ isLiked ? 'UnLike' : 'Like' }}" 
-                          (click)="toggleLikeStory()"
-                        >
-                        <p *ngIf="isLiked">Liked</p>
-                            <p *ngIf="!isLiked">Like</p>
-                      </div>
-                      <div title="Reads">
-                        <img src="open-book.png" alt="Reads" class="icons">
-                        <p >{{ totalReads }}</p>
-                     </div>
-                      <div title="Likes">
-                        <img src="like.png" alt="like" class="icons">
-                        <p >{{likeCount}}</p>
-                     </div>
-                     <div>
-                        <img 
-                            [src]="isSaved ? 'bookmark.png' : 'save.png'" 
-                            alt="Save Story" 
-                            class="icons" 
-                            title="{{ isSaved ? 'Unsave' : 'Save' }}" 
-                            (click)="toggleSaveStory()">
 
-                            <p *ngIf="isSaved">Saved</p>
-                            <p *ngIf="!isSaved">Save</p>
+                    <div>
+                        <img src="{{ isLiked ? 'liked.png' : 'heart.png' }}" alt="Like Story" class="icons"
+                            title="{{ isLiked ? 'UnLike' : 'Like' }}" (click)="toggleLikeStory()">
+                        <p *ngIf="isLiked">Liked</p>
+                        <p *ngIf="!isLiked">Like</p>
                     </div>
-                    
-                
+                    <div title="Reads">
+                        <img src="open-book.png" alt="Reads" class="icons">
+                        <p>{{ totalReads }}</p>
+                    </div>
+                    <div title="Likes">
+                        <img src="like.png" alt="like" class="icons">
+                        <p>{{likeCount}}</p>
+                    </div>
+                    <div>
+                        <img [src]="isSaved ? 'bookmark.png' : 'save.png'" alt="Save Story" class="icons"
+                            title="{{ isSaved ? 'Unsave' : 'Save' }}" (click)="toggleSaveStory()">
+
+                        <p *ngIf="isSaved">Saved</p>
+                        <p *ngIf="!isSaved">Save</p>
+                    </div>
+
+
                 </div>
                 <div class="author-details">
                     <div>
-                        <h6>Author Name:</h6>
+                        <h6>Author Name: </h6>
                         <p> {{story?.authorName}}</p>
-                       
-                     </div>
-                     <div>
-                        
-                        <button *ngIf="userId !== (story?.authorId || '')"  
-                        (click)="toggleFollow(story?.authorId || '', userId)" 
-                        class="button-34"
-                        title="{{ following ? 'following' : 'Click to follow' }}">
-                    {{ following ? 'Unfollow' : 'Follow' }}
-                </button>
-                                     
-                        
-                     </div>
+
+                    </div>
+                    <div class="edit">
+
+                        <button *ngIf="userId !== (story?.authorId || '')"
+                            (click)="toggleFollow(story?.authorId || '', userId)" class="button-34"
+                            title="{{ following ? 'following' : 'Click to follow' }}">
+                            {{ following ? 'Unfollow' : 'Follow' }}
+                        </button>
+
+                        <button *ngIf="userId === (story?.authorId || '')" class="button-34" [routerLink]="['/user/edit-story', storyId]">
+                                Edit Story 
+                        </button>
+                        <button *ngIf="userId === (story?.authorId || '')" class="button-34"  (click)="deleteStory()" style="margin-left: 20px;">
+                           Delete Story
+                        </button>
+
+
+                    </div>
                 </div>
                 <div class="read-story">
                     <!-- <button (click)="showStory()">Read Story</button> -->
-                    <button [routerLink] = "['/user/full-story', storyId]">Read Story</button>
+                    <button [routerLink]="['/user/full-story', storyId]">Read Story</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="story-description">
-           <h5>Description</h5>
-           <p>{{story?.summary}}</p>
+        <h5>Description</h5>
+        <p>{{story?.summary}}</p>
     </div>
 
-    <div class="story-content" *ngIf="isStoryVisible"  [innerHTML]="story?.content">
+    <div class="story-content" *ngIf="isStoryVisible" [innerHTML]="story?.content">
     </div>
-   
+
 </div>

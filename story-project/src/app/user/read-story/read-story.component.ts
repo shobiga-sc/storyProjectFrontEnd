@@ -5,6 +5,7 @@ import { StoryApiService } from '../../services/story-api.service';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { FollowService } from '../../services/follow.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-read-story',
@@ -31,7 +32,8 @@ export class ReadStoryComponent {
    constructor(
     private route: ActivatedRoute,
     private storyApiService: StoryApiService,
-    private followService: FollowService
+    private followService: FollowService,
+    private router: Router
    ){}
 
    ngOnInit(){
@@ -198,6 +200,52 @@ export class ReadStoryComponent {
               });
             }
           }
+
+
+          deleteStory() {
+            if (!this.storyId) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Story ID is missing!',
+              });
+              return;
+            }
+          
+            Swal.fire({
+              title: 'Are you sure?',
+              text: 'This action cannot be undone!',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#d33',
+              cancelButtonColor: '#3085d6',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.storyApiService.deleteStory(this.storyId).subscribe(
+                  () => {
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Deleted!',
+                      text: 'Your story has been deleted.',
+                    }).then(() => {
+                      this.router.navigate(['/user/my-story']);
+                    });
+                  },
+                  error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Oops!',
+                      text: 'Failed to delete the story. Please try again.',
+                    });
+                  }
+                );
+              }
+            });
+          }
+          
+          
 
 
 

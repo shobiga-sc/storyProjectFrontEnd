@@ -68,13 +68,15 @@
     /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
 }
 
+
+
 .read-story {
     margin-top: 15px;
 }
 
 .read-story button {
     background-color: #007bff;
-    width: 90%;
+    width: 98%;
     color: white;
     border: none;
     padding: 10px 15px;

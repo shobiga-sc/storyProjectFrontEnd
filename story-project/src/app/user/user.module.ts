@@ -10,6 +10,7 @@ import { FullStoryComponent } from './full-story/full-story.component';
 import { PaymentComponent } from './payment/payment.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SavedStoriesComponent } from './saved-stories/saved-stories.component';
+import { EditorComponent } from './editor/editor.component';
 
 
 
@@ -18,6 +19,7 @@ import { SavedStoriesComponent } from './saved-stories/saved-stories.component';
   imports: [
     CommonModule, HomeComponent, CreateStoryComponent, TiptapEditorComponent, MyStoryComponent, 
     ReadStoryComponent, FullStoryComponent, PaymentComponent, ProfileComponent, SavedStoriesComponent,
+    EditorComponent,
     RouterModule.forChild([
       { path: "", component: HomeComponent },
       { path: "new-story", component: CreateStoryComponent },
@@ -28,6 +30,7 @@ import { SavedStoriesComponent } from './saved-stories/saved-stories.component';
       {path: "payment", component: PaymentComponent},
       {path: "profile", component: ProfileComponent},
       {path: "saved-stories", component: SavedStoriesComponent},
+      {path: "edit-story/:id", component: EditorComponent},
     ])
   ]
 })

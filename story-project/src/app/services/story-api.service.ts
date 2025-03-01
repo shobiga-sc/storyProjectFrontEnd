@@ -17,6 +17,13 @@ export class StoryApiService {
     return this.http.post<Story>(`${this.baseUrl}/api/story/create`, story); 
 }
 
+patchStory(storyId: string, updatedStory: Partial<Story>): Observable<Story> {
+  return this.http.patch<Story>(`${this.baseUrl}/api/story/${storyId}`, updatedStory);
+}
+
+deleteStory(storyId: string): Observable<Story> {
+  return this.http.delete<Story>(`${this.baseUrl}/api/story/${storyId}`);
+}
   getStoryByStatusAnduserId(userId: string, status: string): Observable<Story[]>{
     return this.http.get<Story[]>(`${this.baseUrl}/api/story/${userId}/${status}`);
   }

@@ -5,14 +5,15 @@
             
           
             <div class="dropdown">
-                <span class="dropdown-label">Browse ▼</span>
-                <div class="dropdown-menu">
+                <span class="dropdown-label"> Welcome   {{user?.username}} !  </span>
+                <!-- <span class="dropdown-label">Browse ▼</span> -->
+                <!-- <div class="dropdown-menu">
                     <a href="#">Discover Stories</a>
                     <a href="#">Top Authors</a>
-                </div>
+                </div> -->
             </div>
 
-            <input type="text" class="search-bar" placeholder="🔍 Search...">
+            <input type="text" class="search-bar" placeholder=" Search...">
         </div>
       
         <div class="nav-right">
@@ -30,7 +31,9 @@
             </div>
 
             <div class="dropdown">
-                <img src="user.png" alt="Profile Picture" class="dropdown-label profile-image">
+                <div class="user-name dropdown-label-profile" >
+                <img src="user.png" alt="Profile Picture" class="profile-image">
+                 </div>
                 <!-- <p>{{user?.username}}</p> -->
                 <div class="dropdown-menu-profile">
                     <a (click)="navigateTo('profile')">View Profile</a>

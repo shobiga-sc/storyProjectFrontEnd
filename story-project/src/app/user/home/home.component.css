@@ -17,6 +17,7 @@ body {
     background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease-in-out;
+    max-height: 70px;
 }
 
 .logo {
@@ -55,18 +56,39 @@ body {
 }
 
 .search-bar {
-    padding: 8px 12px;
-    border-radius: 7px;
-    border: 1px solid black;
+    padding: 10px 15px;
+    border-radius: 15px;
+    border: 2px solid rgb(211, 211, 211);
     outline: none;
+    font-size: 16px;
+    width: 200px;
+    border: 2px solid #ff9800;
+ 
+    background: rgba(255, 255, 255, 0.2);
+    color: rgb(0, 0, 0);
+    transition: all 0.3s ease-in-out;
+    
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+}
+
+.search-bar::placeholder {
+    color: rgba(0, 0, 0, 0.7);
     font-size: 14px;
-    width: 180px;
-    transition: 0.3s;
 }
 
 .search-bar:focus {
     width: 250px;
+    background: white;
+    color: black;
+    border: 2px solid #ff9800;
+    box-shadow: 0 0 2px rgba(255, 152, 0, 0.5);
 }
+
+.search-bar:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
 
 
 .profile img {
@@ -93,13 +115,14 @@ body {
 }
 
 .dropdown-label {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     color: white;
     padding: 10px;
     display: inline-block;
     transition: color 0.3s;
-    color: #ff9800;
+    /* color: #ff9800; */
+    color: #ff5722;
 }
 
 .dropdown-label:hover {
@@ -111,7 +134,7 @@ body {
     display: none;
     position: absolute;
     top: 100%;
-    left: 0;
+    left: 30px;
     background: rgba(44, 44, 61, 0.9);
     border-radius: 10px;
     width: 200px;
@@ -145,16 +168,40 @@ body {
     opacity: 1;
 }
 
+.dropdown-label-profile {
+    font-size: 15px;
+    font-weight: bold;
+   
+    display: inline-block;
+    transition: color 0.3s;
+    
+    color: #ff4a13;
+}
+
+.dropdown-label-profile p {
+    margin-left: 5px;
+}
 .profile-image{
     margin-right: 30px;
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 0;
+    position: relative;
+    top: 10px;
 }
 
 .profile-container {
     position: relative;
     display: inline-block;
 }
+
+/* .user-name{
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    text-align: center;
+    background-color: red;
+} */
 
 .profile {
     cursor: pointer;

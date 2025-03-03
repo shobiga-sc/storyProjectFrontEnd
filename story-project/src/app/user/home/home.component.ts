@@ -19,6 +19,7 @@ export class HomeComponent {
   userId: string | null = null;
   user: User|null = null;
   stories: Story[] = [];
+  filteredStories: Story[] = [];
  
 
   constructor(private userApiService: UserApiService,
@@ -39,11 +40,28 @@ export class HomeComponent {
     this.storyApiService.getAllPublishedStories().subscribe(
       (data: Story[]) => { 
         this.stories = data;
+        this.filteredStories = [...this.stories];
       }
     );
   }
-
- 
+  searchStories(event: any): void {
+    const query = event?.target?.value?.toLowerCase().trim() || '';
+  
+    if (query === '') {
+      this.filteredStories = [...this.stories];
+      return;
+    }
+  
+    this.filteredStories = this.stories.filter(story =>
+      story?.title?.toLowerCase().includes(query) ||
+      story?.authorName?.toLowerCase().includes(query) ||
+      story?.genre?.toLowerCase().includes(query) ||
+      (story?.tags && story.tags.some(tag => tag.toLowerCase().includes(query)))
+    );
+  }
+  
+  
+  
 
  
 

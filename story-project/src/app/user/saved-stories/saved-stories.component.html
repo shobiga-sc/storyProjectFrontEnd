@@ -4,32 +4,36 @@
             <div class="nav-left">
                 <img class="logo" src="logo.jpg" alt="App Logo">
             </div>
-    
+
             <div class="nav-right">
                 <button class="cancel">Back</button>
-    
+
             </div>
         </nav>
     </div>
-    
- 
-        <h3>Saved Stories</h3>
-        <div class="status">
-           
+
+
+    <h3>Saved Stories</h3>
+    <div class="status">
+        <div *ngIf="savedStories.length>0; else noResults">
             <div class="stories">
-                <div *ngFor="let story of savedStories" class="card" [routerLink] = "['/user/read-story', story.id]">
+                <div *ngFor="let story of savedStories" class="card" [routerLink]="['/user/read-story', story.id]">
                     <div class="prime-div">
                         <img *ngIf="story.paid" src="prime.png" alt="prime" class="prime-logo top">
                         <img src="{{story.posterUrl}}" alt="story poster" class="bg poster">
                         <div class="genre">
-                            <p >{{story.genre}}</p>
+                            <p>{{story.genre}}</p>
                         </div>
                     </div>
-    
+
                 </div>
-                
+
             </div>
         </div>
-  
+        <ng-template #noResults>
+            <p class="no-results">No stories here! </p>
+        </ng-template>
+    </div>
+
 
 </div>

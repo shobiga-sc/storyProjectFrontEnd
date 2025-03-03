@@ -1,0 +1,74 @@
+<div class="nav-container">
+  <nav class="navbar">
+      <div class="nav-left">
+          <img class="logo" src="logo.jpg" alt="App Logo">
+      </div>
+
+      <div class="nav-right">
+          <button class="cancel" routerLink="/user">Home</button>
+
+      </div>
+  </nav>
+</div>
+
+<div class="container">
+     
+    
+  <h2>Admin Dashboard</h2>
+
+  <div class="flex">
+
+
+    <div class="amount">
+      <label>Amount per Subscription: </label>
+      <input type="number" [(ngModel)]="subscriptionAmount">
+      <button (click)="updateAmount()">Update</button><br><br>
+      <p>Current Subscription Amount: ₹{{ subscriptionAmount }}</p>
+    </div>
+    <div class="router-link" routerLink="reports" class="reports">Show Reports</div>
+    
+  </div>
+  <h5>Admin Statistics</h5>
+  <div class="time">
+  <label>Month:</label>
+  <input type="number" [(ngModel)]="selectedMonth" min="1" max="12">
+
+  <label>Year:</label>
+  <input type="number" [(ngModel)]="selectedYear" min="2020">
+
+  <button (click)="fetchStats()">Fetch Stats</button>
+  </div>
+  <div class="info">Total Reads: {{ totalReads }}</div>
+  <div class="info">Paid Reads: {{ paidReads }}</div>
+  <div class="info">Unpaid Reads: {{ unpaidReads }}</div>
+  <div class="info">Total Revenue: ₹{{ totalRevenue }}</div>
+  <div class="info splitup"> App Share : ₹{{ appShare}}  |  Writers' Pool :  ₹{{ writerPool }} | Platform Fee:  ₹{{ platformFee}} </div>
+
+  <div *ngIf="earnings.length > 0; else noData">
+    <table>
+      <thead>
+        <tr>
+          <th>Author ID</th>
+          <th>Paid Reads</th>
+          <th>Unpaid Reads</th>
+          <th>Popularity Score</th>
+          <th>Earnings (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let writer of earnings">
+          <td>{{ writer.authorId }}</td>
+          <td>{{ writer.paidReads }}</td>
+          <td>{{ writer.unpaidReads }}</td>
+          <td>{{ writer.popularityScore }}</td>
+          <td>{{ writer.earnings ? (writer.earnings | currency:'INR') : '₹0.00' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <ng-template #noData>
+    <p>No earnings data available.</p>
+  </ng-template>
+
+
+</div>

@@ -13,7 +13,7 @@
                             title="{{ isLiked ? 'UnLike' : 'Like' }}" (click)="toggleLikeStory()">
                     </div>
 
-                    <div>
+                    <div *ngIf="userId !== story?.authorId"  (click)="reportStory()" >
                         <img src="report.png" alt="Report Story" class="icons" title="report">
                     </div>
 

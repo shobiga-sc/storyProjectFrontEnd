@@ -1,4 +1,5 @@
 <button class="prime" (click)="initiatePayment()" [disabled]="isLoading">
-    {{ isLoading ? 'Processing...' : 'Subscribe for ₹499' }}
+ {{ isLoading ? 'Processing...' : 'Subscribe for ₹' + subscriptionAmount }}
+
   </button>
   

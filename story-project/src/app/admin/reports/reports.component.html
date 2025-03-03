@@ -1,0 +1,55 @@
+<div class="container">
+
+<h2>Reported Stories</h2>
+<table>
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Reporter</th>
+            <th>Reported Author</th>
+            <th>Reason</th>
+            <th>Date</th>
+            <th>Accept Report</th>
+            <th>Delete Story</th>
+            <th>Delete User</th>
+            <!-- <th>Status</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let report of reports; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ report.reportedByUserId }}</td>
+            <td>{{ report.reportedAuthorId }}</td>
+            <td>
+                <div class="reason-container">
+                  {{ report.reason }}
+                </div>
+              </td>
+              
+            <td>{{ report.reportedAt | date:'medium' }}</td>
+            <td>
+                <button *ngIf="!report.isReportAccepted" (click)="acceptReport(report)">Accept</button>
+                <span *ngIf="report.isReportAccepted" class="accepted">Accepted</span>
+            </td>
+            <td>
+                <button *ngIf="!report.isStoryDeleted" (click)="deleteStory(report?.reportedStoryId ?? '', report)">
+                    Delete Story
+                </button>
+                <span *ngIf="report.isStoryDeleted" class="deleted">Deleted Story</span>
+
+            </td>
+            <td>
+                <button *ngIf="!report.isUserDeleted" (click)="deleteUser(report?.reportedAuthorId ?? '', report)">
+                    Delete Author
+                </button>
+                <span *ngIf="report.isUserDeleted" class="deleted">Deleted Author</span>
+            </td>
+            <!-- <td>
+        <span *ngIf="report.isReportAccepted" class="accepted">Report Accepted</span>
+        <span *ngIf="report.isStoryDeleted" class="deleted">Deleted Story</span>
+        <span *ngIf="report.isUserDeleted" class="deleted">Deleted User</span>
+      </td> -->
+        </tr>
+    </tbody>
+</table>
+</div>

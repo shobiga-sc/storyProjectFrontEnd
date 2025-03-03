@@ -20,6 +20,14 @@ export class UserApiService {
     return this.http.get<User>(`${this.baseUrl}/api/user/${userId}`);
    }
 
+   deleteUserById(userId : string): Observable<string>{
+    return this.http.delete<string>(`${this.baseUrl}/api/user/deleteUser/${userId}`);
+   }
+
+   updatePrimeStatus(userId: string, status: boolean) {
+    return this.http.put(`${this.baseUrl}/api/user/${userId}/update-prime`, { isPrimeSubscriber: status });
+  }
+  
  
 
 }

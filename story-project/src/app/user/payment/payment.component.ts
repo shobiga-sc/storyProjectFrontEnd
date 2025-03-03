@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { PaymentService } from '../../services/payment.service';
 import { Router } from '@angular/router';
+import { SubscriptionService } from '../../services/subscription.service';
+import Swal from 'sweetalert2';
 
 declare var Razorpay: any;
 
@@ -14,8 +16,18 @@ declare var Razorpay: any;
 export class PaymentComponent {
   @Input() userId!: string;
   isLoading = false;
+  subscriptionAmount: number = 0;
 
-  constructor(private paymentService: PaymentService, private router: Router) {}
+  constructor(private paymentService: PaymentService, private router: Router,
+    private subscriptionService: SubscriptionService
+
+  ) { }
+
+  ngOnInit() {
+    this.subscriptionService.getSubscriptionAmount().subscribe(amount => {
+      this.subscriptionAmount = amount;
+    });
+  }
 
   initiatePayment() {
     this.isLoading = true;
@@ -29,7 +41,7 @@ export class PaymentComponent {
           amount: order.amount,
           currency: order.currency,
           name: 'Story App',
-          description: 'Prime Subscription - ₹499',
+          description: `Prime Subscription - ₹${this.subscriptionAmount}`,
           order_id: order.id,
           handler: (response: any) => {
             this.verifyPayment(response.razorpay_payment_id, response.razorpay_order_id);
@@ -49,8 +61,14 @@ export class PaymentComponent {
       },
       (error) => {
         this.isLoading = false;
-        console.error('Payment initiation failed', error);
-        alert('Payment failed! Please try again.');
+      
+        Swal.fire({
+          icon: 'error',
+          title: 'Payment Failed!',
+          text: 'There was an issue processing your payment. Please try again.',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'Retry'
+        });
       }
     );
   }
@@ -64,11 +82,25 @@ export class PaymentComponent {
 
     this.paymentService.verifyPayment(paymentData).subscribe(
       () => {
-        alert('Payment successful! You are now a Prime subscriber.');
-        this.router.navigate(['/']); 
+        Swal.fire({
+          icon: 'success',
+          title: 'Payment Successful!',
+          text: 'You are now a Prime subscriber.',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.router.navigate(['/user']);
+        });
       },
       (error) => {
         console.error('Payment verification failed', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Payment Failed!',
+          text: 'There was an issue verifying your payment. Please try again.',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'Retry'
+        });
       }
     );
   }

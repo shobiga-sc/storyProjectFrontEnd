@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { PaymentComponent } from '../payment/payment.component';
 import { FollowService } from '../../services/follow.service';
+import { WriterEarnings } from '../../models/writer-earnings.model';
 
 @Component({
   selector: 'app-profile',
@@ -22,6 +23,7 @@ export class ProfileComponent {
   monthlyViews: { paid: number; unpaid: number } = { paid: 0, unpaid: 0 };
   followersCount = 0;
   followingCount = 0;
+  earnings: WriterEarnings | null = null;
 
   years: number[] = [];
   months: { value: number; name: string }[] = [
@@ -54,6 +56,9 @@ export class ProfileComponent {
         this.followersCount = data.followersCount;
         this.followingCount = data.followingCount;
       });
+
+
+      
     }
 
   }
@@ -81,6 +86,24 @@ export class ProfileComponent {
             console.error('Error fetching monthly views', error);
           }
         );
+
+
+        this.storyApiService.getCurrentWriterEarnings(this.userId, this.month, this.year).subscribe(
+          (data: WriterEarnings) => {
+            this.earnings = {
+              authorId: data.authorId || '',
+              paidReads: Number(data.paidReads) || 0,
+              unpaidReads: Number(data.unpaidReads) || 0,
+              popularityScore: Number(data.popularityScore) || 0,
+              earnings: Math.round(Number(data.earnings)) || 0 
+            };
+            console.log(this.earnings);
+          },
+          (error) => {
+            console.error('Error fetching writer earnings', error);
+          }
+        );
+        
     }
   }
   

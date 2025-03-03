@@ -18,7 +18,7 @@ export class FullStoryComponent {
 
   storyId: string = '';
   story?: Story;
-  user?: User;
+  user: User|null = null;
   isStoryVisible = false;
   userId = localStorage.getItem('userId') as string;
   isSaved = false;
@@ -37,50 +37,43 @@ export class FullStoryComponent {
   ) { }
 
   ngOnInit() {
-    this.storyId = this.route.snapshot.paramMap.get('id') || '';
+  this.storyId = this.route.snapshot.paramMap.get('id') || '';
 
+  this.userApiService.getUserById(this.userId).subscribe(userData => {
 
-    this.userApiService.getUserById(this.userId).subscribe(
-      data => {
-        this.user = data;
-      }
-    );
-    this.storyApiService.getStoryById(this.storyId).subscribe(
-      (data: Story) => {
-        this.story = data;
-        this.likeCount = data.likeCount ?? 0;
-        this.viewCount = data.viewCount ?? 0;
+    this.user = userData;
 
-        if (!(this.story.paid && (this.userId !== this.story.authorId) && !this.user?.primeSubscriber))
-          this.trackStoryRead();
+    this.storyApiService.getStoryById(this.storyId).subscribe(storyData => {
+      this.story = storyData;
+      this.likeCount = storyData.likeCount ?? 0;
+      this.viewCount = storyData.viewCount ?? 0;
 
-        this.shouldBlur = !!this.story.paid && (this.userId !== this.story.authorId) && !this.user?.primeSubscriber;
+      
+      const isPaidStory = this.story.paid && this.userId !== this.story.authorId;
+      this.shouldBlur = Boolean(isPaidStory && !(this.user?.primeSubscriber)); 
 
+      console.log(this.story.paid, this.userId !== this.story.authorId, this.user?.primeSubscriber );
 
-        if (this.shouldBlur) {
-          const words = this.story.content.split(' ');
-          this.visibleContent = words.slice(0, 25).join(' ') + '...'; 
-          this.hiddenContent = words.slice(20).join(' '); 
-          console.log(this.visibleContent);
-          console.log(this.hiddenContent);
-          
-        } else {
-          this.visibleContent = this.story.content;
-          this.hiddenContent = '';
-        }
-        
-
-
+      if (!this.shouldBlur) {
+        this.trackStoryRead();
       }
 
-    );
+      if (this.shouldBlur) {
+        const words = this.story.content.split(' ');
+        this.visibleContent = words.slice(0, 25).join(' ') + '...';
+        this.hiddenContent = words.slice(20).join(' ');
+      } else {
+        this.visibleContent = this.story.content;
+        this.hiddenContent = '';
+      }
+    });
+  });
 
+  this.checkIfSaved();
+  this.checkIfLiked();
+}
 
-    this.checkIfSaved();
-    this.checkIfLiked();
-
-
-  }
+  
 
 
 
@@ -204,5 +197,49 @@ export class FullStoryComponent {
         }
       );
     }
+  }
+
+
+  reportStory() {
+    Swal.fire({
+      title: "Report this story",
+      input: "text",
+      inputLabel: "Reason for reporting",  
+      inputPlaceholder: "Enter your reason here...",  
+      inputAttributes: {
+        autocapitalize: "off"
+      },
+      showCancelButton: true,
+      confirmButtonText: "Submit",
+      showLoaderOnConfirm: true,
+      preConfirm: async (reason) => {
+        if (!reason) {
+          Swal.showValidationMessage("Please enter a reason!");
+          return false;
+        }
+        try {
+          return this.storyApiService.reportStory({
+            reportedByUserId: this.userId,
+            reportedAuthorId: this.story?.authorId,
+            reportedStoryId: this.storyId,
+            reason: reason,
+            isReportAccepted: false,
+            isStoryDeleted: false,
+            isUserDeleted: false
+          }).toPromise();
+        } catch (error) {
+          Swal.showValidationMessage(`Error: ${error}`);
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          icon: "success",
+          title: "Report Submitted",
+          text: "Your report has been recorded."
+        });
+      }
+    });
   }
 }

@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sign-up',
@@ -22,23 +23,36 @@ export class SignUpComponent {
 
   signup() {
     const userData = {
-        username: this.username,
-        email: this.email,
-        password: this.password,
-        roles: ['ROLE_USER'], 
-        isPrimeSubscriber: false,
-        primeSubscriptionExpiry: null,
-        followedAuthors: []
+      username: this.username,
+      email: this.email,
+      password: this.password,
+      roles: ['ROLE_USER'],
+      isPrimeSubscriber: false,
+      primeSubscriptionExpiry: null,
+      followedAuthors: []
     };
-
+  
     this.authService.signup(userData).subscribe({
-        next: (response) => {
-            alert('Signup successful! Please login.');
-            this.router.navigate(['']);
-        },
-        error: (err) => {
-            alert('Signup failed. Try again.');
-        },
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Signup Successful!',
+          text: 'Please login to continue.',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.router.navigate(['']);
+        });
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Signup Failed!',
+          text: 'Something went wrong. Please try again.',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'Retry'
+        });
+      }
     });
 }
 

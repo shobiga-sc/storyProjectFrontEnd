@@ -160,3 +160,11 @@ h5 {
     border-radius: 5px;
 }
 
+.no-results {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+    margin-top: 20px;
+    height: 100px;
+   
+}

@@ -5,6 +5,7 @@ import { User } from '../../../models/user.model';
 import { Story } from '../../../models/story.model';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-my-story',
@@ -22,6 +23,7 @@ export class MyStoryComponent {
   constructor(
   private storyApiService: StoryApiService,
   private userApiService: UserApiService,
+  private location:Location
   ){
 
   }
@@ -47,6 +49,10 @@ export class MyStoryComponent {
         console.log("published: ", this.publishedStories);
       }
     );
+  }
+
+  back(){
+    this.location.back();
   }
 
 

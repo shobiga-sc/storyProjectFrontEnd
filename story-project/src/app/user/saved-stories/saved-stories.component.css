@@ -25,12 +25,12 @@ h3 {
     text-align: center;
     font-size: 24px;
     font-weight: bold;
-    color: #ff9800;
+    color: #ff5722;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     margin-top: 15px;
     padding-bottom: 5px;
-    border-bottom: 3px solid #ff9800;
+    border-bottom: 3px solid #ff5722;
     
    
   }
@@ -80,7 +80,7 @@ h3 {
   }
   
   .cancel:hover {
-    background-color: #ff9800;
+    background-color: #ff5722;
     color: white;
   }
   

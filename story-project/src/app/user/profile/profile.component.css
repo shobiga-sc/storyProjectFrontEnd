@@ -68,12 +68,12 @@
     border-radius: 8px;
     text-align: center;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #ff9800;
+    border-left: 5px solid #ff5722;
   }
   
   .views-card select {
     padding: 6px;
-    border: 1px solid #ff9800;
+    border: 1px solid#ff5722;
     border-radius: 5px;
     background: white;
     color: #333;
@@ -92,7 +92,7 @@
   }
 
   .writes{
-    margin-top: 20px;
+    margin-top: 40px;
   }
   
   .writes,
@@ -101,7 +101,7 @@
     padding: 12px;
     text-align: center;
     background: white;
-    color: #ff9800;
+    color: #ff5722;
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
@@ -112,7 +112,7 @@
   
   .writes:hover,
   .saved-stories:hover {
-    background: #ff9800;
+    background: #ff5722;
     color: white;
   }
   
@@ -147,17 +147,17 @@
   
 
   .paid-value {
-    color: #ff9800;
+    color: #ff5722;
     font-weight: bold;
   }
   
   .paid-icon {
-    color: #ff9800;
+    color: #ff5722;
   }
   
   
   .unpaid-value {
-    color: #ff9800;
+    color: #ff5722;
   }
   
   .unpaid-icon {

@@ -19,8 +19,8 @@ import { StoryApiService } from '../../services/story-api.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
-
+import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
 
 export const FontSize = Extension.create({
   name: 'fontSize',
@@ -89,6 +89,7 @@ export class EditorComponent {
       private storyApiService: StoryApiService,
       private router: Router,
       private route: ActivatedRoute,
+      private location: Location
         
     ) {}
   
@@ -209,15 +210,42 @@ export class EditorComponent {
       };
 
       console.log(this.storyContent);
-  
       this.storyApiService.patchStory(this.storyId, updatedStory).subscribe(
         () => {
-          this.router.navigate(['/user/my-story']); 
+          Swal.fire({
+            icon: 'success',
+            title: 'Story Updated!',
+            text: 'Your story has been successfully updated.',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK',
+            showClass: {
+              popup: 'animate__animated animate__fadeInUp animate__faster'
+            },
+            hideClass: {
+              popup: 'animate__animated animate__fadeOutDown animate__faster'
+            }
+          }).then(() => {
+            this.router.navigate(['/user/my-story']);
+          });
         },
-        error => {
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Update Failed!',
+            text: 'There was an error updating your story. Please try again.',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'OK',
+            showClass: {
+              popup: 'animate__animated animate__shakeX animate__faster'
+            },
+            hideClass: {
+              popup: 'animate__animated animate__fadeOutDown animate__faster'
+            }
+          });
           console.error('Error:', error);
         }
       );
+      
     }
 
      onPublish() {
@@ -230,13 +258,50 @@ export class EditorComponent {
 
     this.storyApiService.patchStory(this.storyId, updatedStory).subscribe(
       () => {
-        this.router.navigate(['/user/my-story']); 
+        Swal.fire({
+          icon: 'success',
+          title: 'Story Updated!',
+          text: 'Your story has been successfully updated.',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.router.navigate(['/user/my-story']);
+        });
       },
-      error => {
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Update Failed!',
+          text: 'There was an error updating your story. Please try again.',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        });
         console.error('Error:', error);
       }
     );
   }
+
+   cancel() {
+     Swal.fire({
+       title: 'Are you sure?',
+       text: "You won't be able to reterive this data!",
+       icon: 'warning',
+       showCancelButton: true,
+       confirmButtonColor: '#3085d6',
+       cancelButtonColor: '#d33',
+       confirmButtonText: 'Yes, cancel it!'
+     }).then((result) => {
+       if (result.isConfirmed) {
+         this.location.back();
+         Swal.fire(
+           'Cancelled!',
+           'Your action has been cancelled.',
+           'success'
+         );
+       }
+     });
+   }
+    
 
     ngOnDestroy(): void {
       this.editor?.destroy();

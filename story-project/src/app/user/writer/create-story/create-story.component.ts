@@ -8,6 +8,7 @@ import { StoryContentService } from '../../../services/story-content.service';
 import { User } from '../../../models/user.model';
 import { UserApiService } from '../../../services/user-api.service'; 
 import { Story } from '../../../models/story.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-story',
@@ -133,4 +134,26 @@ export class CreateStoryComponent {
     this.coverImageUrl = null;
     this.storyForm.patchValue({ coverImageUrl: '' });
   }
+
+  cancel() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to reterive this data!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, cancel it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(['/user']);
+        Swal.fire(
+          'Cancelled!',
+          'Your action has been cancelled.',
+          'success'
+        );
+      }
+    });
+  }
+  
 }

@@ -175,7 +175,7 @@ export class ReadStoryComponent {
                 this.isLiked = false;
                 this.likeCount = Math.max(0, this.likeCount - 1);
                 Swal.fire({
-                  position: "top-end",
+               
                   icon: "success",
                   title: "Like Removed",
                   showConfirmButton: false,
@@ -189,7 +189,7 @@ export class ReadStoryComponent {
                 this.isLiked = true;
                 this.likeCount += 1;
                 Swal.fire({
-                  position: "top-end",
+           
                   icon: "success",
                   title: "Story Liked",
                   showConfirmButton: false,

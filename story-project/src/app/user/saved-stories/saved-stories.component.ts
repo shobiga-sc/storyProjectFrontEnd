@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Story } from '../../models/story.model'; // Ensure you have a Story model
 import { forkJoin } from 'rxjs';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-saved-stories',
   standalone: true,
@@ -17,7 +17,7 @@ export class SavedStoriesComponent {
   savedStories: Story[] = [];
   userId = localStorage.getItem('userId');
 
-  constructor(private storyApiService: StoryApiService) {}
+  constructor(private storyApiService: StoryApiService, private location: Location) {}
 
   ngOnInit(): void {
     const userId = this.userId ?? ''; 
@@ -33,5 +33,9 @@ export class SavedStoriesComponent {
         this.savedStories = stories;
       });
     });
+  }
+
+  back(){
+    this.location.back();
   }
 }

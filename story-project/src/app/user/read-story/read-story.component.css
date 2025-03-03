@@ -9,12 +9,17 @@
     max-width: 800px;
     margin: auto;
     padding: 20px;
+
 }
 
 .about-story {
     display: flex;
     gap: 20px;
     align-items: flex-start;
+    padding: 10px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+   
 }
 
 .bg {
@@ -93,12 +98,13 @@
 .story-description {
     margin-top: 20px;
     padding: 15px;
-    background: #f9f9f9;
+    background: #f8f8f8;
     border-radius: 10px;
     max-width: 800px;
     text-align: center;
     margin: auto;
     padding: 20px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
 }
 
 .story-content {
@@ -108,7 +114,7 @@
     background: #ffffff;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    text-align: justify;
+    /* text-align: justify; */
 }
 
 .story-content img {

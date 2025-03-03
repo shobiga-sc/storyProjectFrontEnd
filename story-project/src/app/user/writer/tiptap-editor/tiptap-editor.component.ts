@@ -17,6 +17,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { StoryApiService } from '../../../services/story-api.service'; 
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 export const FontSize = Extension.create({
   name: 'fontSize',
   addGlobalAttributes() {
@@ -173,10 +174,25 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     this.storyApiService.postStory(fullStory).subscribe(
       data => {
         console.log(data);
-        this.router.navigate(['/user/my-story']); 
+        Swal.fire({
+          icon: 'success',
+          title: 'Story Posted!',
+          text: 'Your story has been successfully posted.',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.router.navigate(['/user/my-story']);
+        });
       },
       error => {
         console.error('Error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to post the story. Please try again later.',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        });
       }
     );
     
@@ -206,18 +222,55 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     this.storyApiService.postStory(fullStory).subscribe(
       data => {
         console.log(data);
-        this.router.navigate(['/user/my-story']); 
+        Swal.fire({
+          icon: 'success',
+          title: 'Story Posted!',
+          text: 'Your story has been successfully posted.',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.router.navigate(['/user/my-story']);
+        });
       },
       error => {
         console.error('Error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to post the story. Please try again later.',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        });
       }
     );
+    
     
 
 
 
     
   }
+
+   cancel() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to reterive this data!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, cancel it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/user']);
+          Swal.fire(
+            'Cancelled!',
+            'Your action has been cancelled.',
+            'success'
+          );
+        }
+      });
+    }
 
   ngOnDestroy(): void {
     this.editor?.destroy();

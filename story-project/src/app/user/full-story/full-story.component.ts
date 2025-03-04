@@ -28,6 +28,7 @@ export class FullStoryComponent {
   shouldBlur: boolean = false;
   visibleContent: string = '';
   hiddenContent: string = '';
+  userRole: string = localStorage.getItem('userRole') as string;
   
 
   constructor(
@@ -54,11 +55,12 @@ export class FullStoryComponent {
 
       console.log(this.story.paid, this.userId !== this.story.authorId, this.user?.primeSubscriber );
 
-      if (!this.shouldBlur) {
+      if (!this.shouldBlur && (this.userId !== this.story.authorId)) {
+        
         this.trackStoryRead();
       }
 
-      if (this.shouldBlur) {
+      if (this.shouldBlur && localStorage.getItem('userRole') != "ROLE_ADMIN") {
         const words = this.story.content.split(' ');
         this.visibleContent = words.slice(0, 25).join(' ') + '...';
         this.hiddenContent = words.slice(20).join(' ');

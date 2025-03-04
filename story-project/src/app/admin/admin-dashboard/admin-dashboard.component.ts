@@ -26,6 +26,7 @@ export class AdminDashboardComponent {
   platformFee: number = 0;
   appShare: number = 0;
   writerPool: number = 0;
+  userRole: string = localStorage.getItem('userRole') as string;
 
 
   constructor(private subscriptionService: SubscriptionService,
@@ -44,10 +45,17 @@ export class AdminDashboardComponent {
   }
 
   updateAmount(): void {
+    if (!this.subscriptionAmount) {
+      Swal.fire({ title: 'Error', text: "Amount cannot be empty", icon: 'warning' });
+      return;
+    }
+    
+   
     this.subscriptionService.updateSubscriptionAmount(this.subscriptionAmount).subscribe(response => {
-      Swal.fire('Success', response, 'success');
+     
       this.fetchCurrentAmount();
     });
+    Swal.fire({ title: 'Success', text: "Updated", icon: 'success' });
   }
 
   fetchStats(): void {

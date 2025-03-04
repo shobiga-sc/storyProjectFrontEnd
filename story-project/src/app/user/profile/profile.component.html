@@ -63,7 +63,8 @@
 
             <div class="writes" routerLink="/user/my-story">Writings</div>
             <div class="saved-stories" routerLink="/user/saved-stories">Saved Stories</div>
-            <div class="saved-stories"> Delete Account</div>
+            <div class="saved-stories" *ngIf="(userRole != 'ROLE_ADMIN')" (click)="deleteUser()"> Delete Account</div>
+            <div class="saved-stories" *ngIf="(userRole == 'ROLE_ADMIN')">YOU ARE ADMIN</div>
         </div>
     </div>
 

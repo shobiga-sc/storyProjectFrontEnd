@@ -22,6 +22,17 @@ export class SignUpComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   signup() {
+    if (!this.username || !this.email || !this.password) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Missing Fields!',
+        text: 'Please fill out all fields.',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
+  
     const userData = {
       username: this.username,
       email: this.email,
@@ -33,7 +44,7 @@ export class SignUpComponent {
     };
   
     this.authService.signup(userData).subscribe({
-      next: () => {
+      next: (response) => {
         Swal.fire({
           icon: 'success',
           title: 'Signup Successful!',
@@ -48,12 +59,13 @@ export class SignUpComponent {
         Swal.fire({
           icon: 'error',
           title: 'Signup Failed!',
-          text: 'Something went wrong. Please try again.',
+          text:'Something went wrong. Please try again. ' ,
           confirmButtonColor: '#d33',
           confirmButtonText: 'Retry'
         });
       }
     });
-}
+  }
+  
 
 }

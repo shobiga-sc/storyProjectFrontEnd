@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,8 @@ export class AuthService {
   }
 
 
-  signup(userData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/api/auth/signup`, userData);
+  signup(userData: any): Observable<User> {
+    return this.http.post<User>(`${this.baseUrl}/api/auth/signup`, userData);
   }
 
 

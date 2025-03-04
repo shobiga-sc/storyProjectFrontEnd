@@ -63,7 +63,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   editor!: Editor;
   editorContent: string = ''; 
   storyContent: string = '';
-  // @Output() contentChange = new EventEmitter<string>();
+ 
   @ViewChild('editorContainer', { static: false }) editorContainer!: ElementRef;
 
   constructor(private storyContentService: StoryContentService, 
@@ -95,7 +95,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   onUpdate(editor: Editor) {
     this.editorContent = editor.getHTML();
     this.storyContent = this.editorContent;
-    // this.contentChange.emit(this.editorContent);
+ 
   }
 
   ngAfterViewInit(): void {
@@ -135,9 +135,14 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
       img.onload = () => {
         if (img.width > 1000) {
-          alert(`Image width should not exceed 1000px. Your image width is ${img.width}px.`);
+          Swal.fire({
+            title: "Image Too Large",
+            text: `Image width should not exceed 1000px. Your image width is ${img.width}px.`,
+            icon: "warning",
+          });
           return;
         }
+        
 
         this.editor.chain().focus().setImage({ src }).run();
 
@@ -166,10 +171,25 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
     console.log(fullStory);
 
-    // if (!fullStory.content) {
-    //   console.error('Error: Story content is empty!');
-    //   return;
-    // }
+    if (!fullStory.content) {
+      Swal.fire({
+        title: "No content",
+        text: `Story content is empty!. It canntot be empty`,
+        icon: "warning",
+      });
+      
+      return;
+    }
+
+    if(fullStory.content.length<500){
+      Swal.fire({
+        title: "Low content",
+        text: `Story content is too low! A story should have minimum 500 charcters`,
+        icon: "warning",
+      });
+      
+      return;
+    }
 
     this.storyApiService.postStory(fullStory).subscribe(
       data => {
@@ -213,11 +233,25 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     console.log(fullStory);
+    if (!fullStory.content) {
+      Swal.fire({
+        title: "No content",
+        text: `Story content is empty! It canntot be empty`,
+        icon: "warning",
+      });
+      
+      return;
+    }
 
-    // if (!fullStory.content) {
-    //   console.error('Error: Story content is empty!');
-    //   return;
-    // }
+    if(fullStory.content.length<500){
+      Swal.fire({
+        title: "Low content",
+        text: `Story content is too low! A story show have minimum 500 charcters`,
+        icon: "warning",
+      });
+      
+      return;
+    }
 
     this.storyApiService.postStory(fullStory).subscribe(
       data => {

@@ -21,6 +21,17 @@ export class SignInComponent {
 
   }
   login() {
+
+     if (!this.username || !this.password) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Missing Fields!',
+            text: 'Please fill out all fields.',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'OK'
+          });
+          return;
+        }
     const credentials = { username: this.username, password: this.password };
   
     this.authService.login(credentials).subscribe({
@@ -64,7 +75,7 @@ export class SignInComponent {
         Swal.fire({
           icon: 'error',
           title: 'Login Failed!',
-          text: 'Invalid credentials. Try again.',
+          text: 'Invalid credentials. Wrong user name or password. Try again.',
           confirmButtonColor: '#d33',
           confirmButtonText: 'Retry'
         });

@@ -21,6 +21,7 @@ export class HomeComponent {
   user: User|null = null;
   stories: Story[] = [];
   filteredStories: Story[] = [];
+  userRole: string = localStorage.getItem('userRole') as string;
  
 
   constructor(private userApiService: UserApiService,

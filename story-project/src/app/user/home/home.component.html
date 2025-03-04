@@ -5,7 +5,7 @@
 
 
             <div class="dropdown">
-                <span class="dropdown-label"> Welcome {{user?.username}} ! </span>
+                <span class="dropdown-label welcome"> Welcome {{user?.username}} ! </span>
                 <!-- <span class="dropdown-label">Browse ▼</span> -->
                 <!-- <div class="dropdown-menu">
                     <a href="#">Discover Stories</a>
@@ -17,10 +17,10 @@
         </div>
 
         <div class="nav-right">
-            <app-payment *ngIf="user && !user.primeSubscriber" [userId]="user.id"></app-payment>
-            <div class="prime" *ngIf="user && user.primeSubscriber">You are a Prime Subscriber</div>
+            <app-payment *ngIf="user && !user.primeSubscriber && (userRole != 'ROLE_ADMIN')" [userId]="user.id"></app-payment>
+            <div class="prime" *ngIf="user && user.primeSubscriber && (userRole != 'ROLE_ADMIN')">You are a Prime Subscriber</div>
 
-
+            <div class="prime" *ngIf="(userRole == 'ROLE_ADMIN')" routerLink="/admin">Go to admin dashboard</div>
 
             <div class="dropdown">
                 <span class="dropdown-label">Writer ▼</span>

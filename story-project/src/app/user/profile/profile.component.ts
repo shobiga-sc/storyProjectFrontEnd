@@ -7,6 +7,8 @@ import { RouterLink } from '@angular/router';
 import { PaymentComponent } from '../payment/payment.component';
 import { FollowService } from '../../services/follow.service';
 import { WriterEarnings } from '../../models/writer-earnings.model';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -24,6 +26,7 @@ export class ProfileComponent {
   followersCount = 0;
   followingCount = 0;
   earnings: WriterEarnings | null = null;
+  userRole: string = localStorage.getItem('userRole') as string;
 
   years: number[] = [];
   months: { value: number; name: string }[] = [
@@ -38,7 +41,8 @@ export class ProfileComponent {
   constructor(
     private userApiService: UserApiService,
     private storyApiService: StoryApiService,
-    private followService: FollowService
+    private followService: FollowService,
+    private router: Router
   ) {
     this.populateYears();
   }
@@ -122,5 +126,24 @@ export class ProfileComponent {
   getMonthName(month: number): string {
     return this.months.find(m => m.value === month)?.name || 'Unknown Month';
   }
+
+    deleteUser() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'This will permanently delete the you account!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete user!',
+        cancelButtonText: 'No, cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.userApiService.deleteUserById(localStorage.getItem('userId') as string).subscribe(() => {
+           
+            Swal.fire('Deleted!', 'The user has been removed.', 'success');
+            this.router.navigate(['/'])
+          });
+        }
+      });
+    }
   
 }

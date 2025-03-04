@@ -17,7 +17,7 @@
         <div class="status">
             <h5>Published Stories 📜</h5>
 
-            <div *ngIf="draftStories.length > 0; else noResults">
+            <div *ngIf="publishedStories.length > 0; else noStory">
             <div class="stories">
                 <div *ngFor="let story of publishedStories" class="card" [routerLink]="['/user/read-story', story.id]">
                     <div class="prime-div">
@@ -31,6 +31,9 @@
                 </div>
             </div>
             </div>
+            <ng-template #noStory>
+                <p class="no-results">No stories here! </p>
+            </ng-template>
                 <h5>Draft Stories 📝</h5>
                 <div *ngIf="draftStories.length > 0; else noResults">
                 <div class="stories">

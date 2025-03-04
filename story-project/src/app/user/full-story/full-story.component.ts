@@ -19,7 +19,7 @@ export class FullStoryComponent {
 
   storyId: string = '';
   story?: Story;
-  user: User|null = null;
+  user: User | null = null;
   isStoryVisible = false;
   userId = localStorage.getItem('userId') as string;
   isSaved = false;
@@ -30,54 +30,121 @@ export class FullStoryComponent {
   visibleContent: string = '';
   hiddenContent: string = '';
   userRole: string = localStorage.getItem('userRole') as string;
-  
+  data: Date = new Date();
+
 
   constructor(
     private route: ActivatedRoute,
     private storyApiService: StoryApiService,
     private userApiService: UserApiService,
-    private location:Location
-  ) { }
+    private location: Location
+  ) {
+    this.data.setMonth(this.data.getMonth() + 1);
+
+  }
 
   ngOnInit() {
-  this.storyId = this.route.snapshot.paramMap.get('id') || '';
+    this.storyId = this.route.snapshot.paramMap.get('id') || '';
 
-  this.userApiService.getUserById(this.userId).subscribe(userData => {
+    this.userApiService.getUserById(this.userId).subscribe(userData => {
 
-    this.user = userData;
 
-    this.storyApiService.getStoryById(this.storyId).subscribe(storyData => {
-      this.story = storyData;
-      this.likeCount = storyData.likeCount ?? 0;
-      this.viewCount = storyData.viewCount ?? 0;
 
-      
-      const isPaidStory = this.story.paid && this.userId !== this.story.authorId;
-      this.shouldBlur = Boolean(isPaidStory && !(this.user?.primeSubscriber)); 
 
-     
+      this.user = userData;
 
-      if (!this.shouldBlur && (this.userId !== this.story.authorId)) {
-        
-        this.trackStoryRead();
-      }
 
-      if (this.shouldBlur && localStorage.getItem('userRole') != "ROLE_ADMIN") {
-        const words = this.story.content.split(' ');
-        this.visibleContent = words.slice(0, 25).join(' ') + '...';
-        this.hiddenContent = words.slice(20).join(' ');
-      } else {
-        this.visibleContent = this.story.content;
-        this.hiddenContent = '';
-      }
+      console.log(userData);
+
+
+
+
+
+
+
+      this.storyApiService.getStoryById(this.storyId).subscribe(storyData => {
+        this.story = storyData;
+        this.likeCount = storyData.likeCount ?? 0;
+        this.viewCount = storyData.viewCount ?? 0;
+
+
+        const isPaidStory = this.story.paid && this.userId !== this.story.authorId;
+        this.shouldBlur = Boolean(isPaidStory && !(this.user?.primeSubscriber));
+
+
+
+        if (!this.shouldBlur && (this.userId !== this.story.authorId)) {
+          if (
+            this.story.paid &&
+            this.user &&
+            !this.user.primeSubscriber &&
+            this.user.signUpDate &&
+            new Date(this.user.signUpDate) < new Date(this.data)
+          ) {
+            if (this.user.freeRead.includes(this.storyId))
+                this.trackStoryRead();
+          }
+
+          else {
+            this.trackStoryRead();
+          }
+        }
+
+        if (
+          this.story.paid &&
+          this.user &&
+          !this.user.primeSubscriber &&
+          this.user.signUpDate &&
+          new Date(this.user.signUpDate) < new Date(this.data) &&
+          Array.isArray(this.user.freeRead) &&
+          this.user.freeRead.length < 3
+        ) {
+          if (!this.user.freeRead.includes(this.storyId)) {
+
+            if (!(this.user.freeRead.length >= 3)) {
+              this.user.freeRead.push(this.storyId);
+
+              this.userApiService.updateFreeRead(this.userId, [...this.user.freeRead]).subscribe(() => { });
+            }
+          }
+
+          if (this.user.freeRead.includes(this.storyId))
+            this.shouldBlur = false;
+
+
+        }
+
+        if (
+          this.story.paid &&
+          this.user &&
+          !this.user.primeSubscriber &&
+          this.user.signUpDate &&
+          new Date(this.user.signUpDate) < new Date(this.data)
+        ) {
+          if (this.user.freeRead.includes(this.storyId))
+            this.shouldBlur = false;
+        }
+
+
+
+
+
+        if (this.shouldBlur && localStorage.getItem('userRole') != "ROLE_ADMIN") {
+          const words = this.story.content.split(' ');
+          this.visibleContent = words.slice(0, 25).join(' ') + '...';
+          this.hiddenContent = words.slice(20).join(' ');
+        } else {
+          this.visibleContent = this.story.content;
+          this.hiddenContent = '';
+        }
+      });
     });
-  });
 
-  this.checkIfSaved();
-  this.checkIfLiked();
-}
+    this.checkIfSaved();
+    this.checkIfLiked();
+  }
 
-  
+
 
 
 
@@ -91,10 +158,10 @@ export class FullStoryComponent {
 
   trackStoryRead(): void {
     if (sessionStorage.getItem(`read_${this.storyId}`)) {
-    
+
       return;
     }
-  
+
 
     if (!this.story) return;
 
@@ -104,7 +171,7 @@ export class FullStoryComponent {
       this.storyId,
       this.story.paid ?? false
     ).subscribe(
-     
+
       (error) => console.error('Error tracking story read:', error)
     );
 
@@ -138,7 +205,7 @@ export class FullStoryComponent {
           timer: 1500
         });
       }, error => {
-       
+
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -150,7 +217,7 @@ export class FullStoryComponent {
         this.isLiked = true;
         this.likeCount += 1;
         Swal.fire({
-   
+
           icon: "success",
           title: "Story Liked",
           showConfirmButton: false,
@@ -179,7 +246,7 @@ export class FullStoryComponent {
           });
         },
         error => {
-      
+
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -200,7 +267,7 @@ export class FullStoryComponent {
           });
         },
         error => {
-       
+
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -216,8 +283,8 @@ export class FullStoryComponent {
     Swal.fire({
       title: "Report this story",
       input: "text",
-      inputLabel: "Reason for reporting",  
-      inputPlaceholder: "Enter your reason here...",  
+      inputLabel: "Reason for reporting",
+      inputPlaceholder: "Enter your reason here...",
       inputAttributes: {
         autocapitalize: "off"
       },
@@ -255,7 +322,7 @@ export class FullStoryComponent {
     });
   }
 
-  back(){
+  back() {
     this.location.back();
   }
 }

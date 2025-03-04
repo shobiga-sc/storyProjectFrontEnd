@@ -7,5 +7,7 @@ export interface User {
     primeSubscriber: boolean;
     primeSubscriptionExpiry: string | null; 
     followedAuthors: string[];
+    signUpDate:  Date,
+    freeRead: string[]
   }
   

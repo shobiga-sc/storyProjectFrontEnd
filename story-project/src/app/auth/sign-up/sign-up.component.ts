@@ -40,7 +40,9 @@ export class SignUpComponent {
       roles: ['ROLE_USER'],
       isPrimeSubscriber: false,
       primeSubscriptionExpiry: null,
-      followedAuthors: []
+      followedAuthors: [],
+      signUpDate: new Date(),
+      freeRead: []
     };
   
     this.authService.signup(userData).subscribe({

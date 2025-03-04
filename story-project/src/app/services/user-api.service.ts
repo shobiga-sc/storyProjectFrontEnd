@@ -28,6 +28,9 @@ export class UserApiService {
     return this.http.put(`${this.baseUrl}/api/user/${userId}/update-prime`, { isPrimeSubscriber: status });
   }
   
+  updateFreeRead(userId: string, freeRead: string[]) {
+    return this.http.put(`${this.baseUrl}/api/user/${userId}/update-freeRead`, { freeRead: freeRead});
+  }
  
 
 }

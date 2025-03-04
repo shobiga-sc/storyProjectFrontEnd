@@ -149,7 +149,7 @@ export class CreateStoryComponent {
     };
 
     this.storyContentService.setStoryData(storyData);
-    console.log('Story saved:', storyData);
+   
     this.router.navigate(['/user/write-story']);
 }
 

@@ -8,7 +8,10 @@
 .container {
     max-width: 800px;
     margin: auto;
+ 
+   margin-left: -20px;
     padding: 20px;
+   
 }
 
 .container {
@@ -47,8 +50,10 @@
 .about-story{
     text-align: center;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
-    padding: 20px;
+    padding: 10px;
     border-radius: 20px;
+    width: 980px;
+
 }
 
 .story-content {
@@ -63,6 +68,11 @@
     border-top: 6px solid #ff5722;
     border-bottom: 6px solid #ff5722;
    
+}
+
+.border{
+    border-top: none;
+    border-bottom: none;
 }
 
 .story-content-hide {
@@ -111,4 +121,81 @@
 
   
   
+
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.1);
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in-out;
+    
+
+}
+
+
+h5 {
+    text-align: center;
+   
+    color: #ff5722;
+  
+    letter-spacing: 1.5px;
+    margin-top: 15px;
+    padding-bottom: 5px;
+  
+    
+   
+  }
+  
+  
+.logo {
+    height: 50px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.logo:hover {
+    transform: scale(1.1);
+}
+
+
+.prime {
+    background: rgb(255, 81, 18);
+    border: none;
+    padding: 12px 18px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+ 
+}
+
+
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+ 
+  .cancel {
+    background-color: #fff;
+    color: rgb(255, 81, 18);
+    border: 2px solid rgb(255, 81, 18);
+    padding: 5px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .cancel:hover {
+    background-color: #ff5722;
+    color: white;
+  }
   

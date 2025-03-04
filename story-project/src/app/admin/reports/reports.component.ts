@@ -33,7 +33,7 @@ export class ReportsComponent {
         isStoryDeleted: report.storyDeleted,
         isUserDeleted: report.isUserDeleted
       }));
-      console.log("Fetched reports:", this.reports);
+    
     });
   }
   

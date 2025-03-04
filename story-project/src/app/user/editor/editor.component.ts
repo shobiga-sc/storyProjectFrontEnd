@@ -131,7 +131,7 @@ export class EditorComponent {
           this.story = data;
           this.storyContent = data.content || '<p>Start writing...</p>';
           this.editor.commands.setContent(this.storyContent, false);
-          console.log(this.storyContent);
+         
         },
         error => {
           console.error('Error fetching story:', error);
@@ -181,11 +181,15 @@ export class EditorComponent {
         img.src = src;
   
         img.onload = () => {
-          if (img.width > 1000) {
-            alert(`Image width should not exceed 1000px. Your image width is ${img.width}px.`);
-            return;
-          }
-  
+           if (img.width > 1000) {
+                   Swal.fire({
+                     title: "Image Too Large",
+                     text: `Image width should not exceed 1000px. Your image width is ${img.width}px.`,
+                     icon: "warning",
+                   });
+                   return;
+                 }
+                 
           this.editor.chain().focus().setImage({ src }).run();
   
           setTimeout(() => {
@@ -209,7 +213,7 @@ export class EditorComponent {
        
       };
 
-      console.log(this.storyContent);
+    
       this.storyApiService.patchStory(this.storyId, updatedStory).subscribe(
         () => {
           Swal.fire({

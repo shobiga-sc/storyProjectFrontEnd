@@ -35,7 +35,7 @@ export class HomeComponent {
     this.userApiService.getUserById(localStorage.getItem('userId') as string).subscribe(
       (data: User) => { 
         this.user = data;
-        console.log(data);
+       
       }
     );
 

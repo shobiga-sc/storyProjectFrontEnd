@@ -7,6 +7,7 @@ import { User } from '../../models/user.model';
 import { UserApiService } from '../../services/user-api.service';
 import { CommonModule } from '@angular/common';
 import { PaymentComponent } from '../payment/payment.component';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-full-story',
   standalone: true,
@@ -34,7 +35,8 @@ export class FullStoryComponent {
   constructor(
     private route: ActivatedRoute,
     private storyApiService: StoryApiService,
-    private userApiService: UserApiService
+    private userApiService: UserApiService,
+    private location:Location
   ) { }
 
   ngOnInit() {
@@ -53,7 +55,7 @@ export class FullStoryComponent {
       const isPaidStory = this.story.paid && this.userId !== this.story.authorId;
       this.shouldBlur = Boolean(isPaidStory && !(this.user?.primeSubscriber)); 
 
-      console.log(this.story.paid, this.userId !== this.story.authorId, this.user?.primeSubscriber );
+     
 
       if (!this.shouldBlur && (this.userId !== this.story.authorId)) {
         
@@ -89,10 +91,10 @@ export class FullStoryComponent {
 
   trackStoryRead(): void {
     if (sessionStorage.getItem(`read_${this.storyId}`)) {
-      console.log('Read tracking already triggered for this session.');
+    
       return;
     }
-    console.log("opened");
+  
 
     if (!this.story) return;
 
@@ -102,7 +104,7 @@ export class FullStoryComponent {
       this.storyId,
       this.story.paid ?? false
     ).subscribe(
-      (msg) => console.log('Story Read Tracked, Updated View Count:', msg),
+     
       (error) => console.error('Error tracking story read:', error)
     );
 
@@ -136,7 +138,12 @@ export class FullStoryComponent {
           timer: 1500
         });
       }, error => {
-        console.error('Error unliking story', error);
+       
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to unlike the story. Please try again.',
+        });
       });
     } else {
       this.storyApiService.likeStory(this.userId, this.storyId).subscribe(() => {
@@ -150,7 +157,11 @@ export class FullStoryComponent {
           timer: 1500
         });
       }, error => {
-        console.error('Error liking story', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to like the story. Please try again.',
+        });
       });
     }
   }
@@ -168,7 +179,7 @@ export class FullStoryComponent {
           });
         },
         error => {
-          console.error('Error unsaving story', error);
+      
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -189,7 +200,7 @@ export class FullStoryComponent {
           });
         },
         error => {
-          console.error('Error saving story', error);
+       
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -242,5 +253,9 @@ export class FullStoryComponent {
         });
       }
     });
+  }
+
+  back(){
+    this.location.back();
   }
 }

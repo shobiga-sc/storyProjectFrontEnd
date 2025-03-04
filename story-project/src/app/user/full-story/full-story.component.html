@@ -1,12 +1,23 @@
 <div class="top-container">
+    <div>
+        <nav class="navbar">
+            <div class="nav-left">
+                <img class="logo" src="logo.jpg" alt="App Logo">
+            </div>
 
+            <div class="nav-right">
+                <button class="cancel" (click)="back()">Back</button>
+
+            </div>
+        </nav>
+    </div>
 
 
     <div class="container">
         <div class="about-story">
 
             <div>
-                <h3>{{story?.genre}} : {{story?.title}}</h3>
+                <h5>{{story?.genre}} : {{story?.title}}</h5>
                 <div class="story-details">
                     <div>
                         <img src="{{ isLiked ? 'liked.png' : 'heart.png' }}" alt="Like Story" class="icons"
@@ -33,7 +44,7 @@
     <!-- <div class="story-content"   [innerHTML]="story?.content">
     </div> -->
 
-    <div class="story-content" [innerHTML]="visibleContent"></div>
+    <div class="story-content" [innerHTML]="visibleContent" [ngClass]="{'border': shouldBlur}"></div>
     <div class="story-content-hide" *ngIf="shouldBlur" [ngClass]="{'blurred': shouldBlur}" [innerHTML]="hiddenContent"></div>
 
     <div *ngIf="shouldBlur && (userRole != 'ROLE_ADMIN')" class="blur-overlay">

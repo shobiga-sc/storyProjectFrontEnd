@@ -70,7 +70,11 @@ export class ReadStoryComponent {
           this.following = true;
           
         },
-        (error) => console.error('Error following author', error)
+        (error) =>   { Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to follow the author. Please try again.',
+        });}
       );
     } else {
       this.followService.unfollowAuthor(authorId, userId).subscribe(
@@ -78,7 +82,11 @@ export class ReadStoryComponent {
           this.following = false;
          
         },
-        (error) => console.error('Error unfollowing author', error)
+        (error) => { Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to unfollow the author. Please try again.',
+        });}
       );
     }
   }
@@ -95,7 +103,7 @@ export class ReadStoryComponent {
     this.storyApiService.getTotalReads(this.storyId).subscribe(
       (totalReads) => {
         this.totalReads = totalReads;
-        console.log(totalReads);
+  
       },
       (error) => {
         console.error('Error fetching total reads:', error);
@@ -129,7 +137,7 @@ export class ReadStoryComponent {
               });
             },
             error => {
-              console.error('Error unsaving story', error);
+             
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -150,7 +158,7 @@ export class ReadStoryComponent {
               });
             },
             error => {
-              console.error('Error saving story', error);
+           
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -182,7 +190,11 @@ export class ReadStoryComponent {
                   timer: 1500
                 });
               }, error => {
-                console.error('Error unliking story', error);
+                { Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'Failed to unlike the story. Please try again.',
+                });}
               });
             } else {
               this.storyApiService.likeStory(this.userId, this.storyId).subscribe(() => {
@@ -196,7 +208,11 @@ export class ReadStoryComponent {
                   timer: 1500
                 });
               }, error => {
-                console.error('Error liking story', error);
+                { Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'Failed to like the story. Please try again.',
+                });}
               });
             }
           }
@@ -233,7 +249,7 @@ export class ReadStoryComponent {
                     });
                   },
                   error => {
-                    console.error('Error:', error);
+            
                     Swal.fire({
                       icon: 'error',
                       title: 'Oops!',

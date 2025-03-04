@@ -93,7 +93,7 @@ export class AdminDashboardComponent {
 
       
         }));
-        console.log(data);
+      
       },
       (error) => {
         console.error('Error fetching writer earnings', error);

@@ -101,7 +101,7 @@ export class ProfileComponent {
               popularityScore: Number(data.popularityScore) || 0,
               earnings: Math.round(Number(data.earnings)) || 0 
             };
-            console.log(this.earnings);
+           
           },
           (error) => {
             console.error('Error fetching writer earnings', error);

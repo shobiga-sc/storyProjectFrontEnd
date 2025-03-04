@@ -169,7 +169,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
       content: this.storyContent.trim(),
     };
 
-    console.log(fullStory);
+ 
 
     if (!fullStory.content) {
       Swal.fire({
@@ -193,7 +193,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.storyApiService.postStory(fullStory).subscribe(
       data => {
-        console.log(data);
+     
         Swal.fire({
           icon: 'success',
           title: 'Story Posted!',
@@ -205,7 +205,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       },
       error => {
-        console.error('Error:', error);
+    
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -232,7 +232,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
       content: this.storyContent.trim(),
     };
 
-    console.log(fullStory);
+ 
     if (!fullStory.content) {
       Swal.fire({
         title: "No content",
@@ -255,7 +255,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.storyApiService.postStory(fullStory).subscribe(
       data => {
-        console.log(data);
+      
         Swal.fire({
           icon: 'success',
           title: 'Story Posted!',
@@ -267,7 +267,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       },
       error => {
-        console.error('Error:', error);
+       
         Swal.fire({
           icon: 'error',
           title: 'Oops...',

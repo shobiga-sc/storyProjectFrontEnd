@@ -93,7 +93,7 @@ export class PaymentComponent {
         });
       },
       (error) => {
-        console.error('Payment verification failed', error);
+      
         Swal.fire({
           icon: 'error',
           title: 'Payment Failed!',

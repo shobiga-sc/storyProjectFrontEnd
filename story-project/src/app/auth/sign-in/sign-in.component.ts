@@ -50,7 +50,7 @@ export class SignInComponent {
   
             if (expiryDate < today) {
               this.userApiService.updatePrimeStatus(userId, false).subscribe(() => {
-                console.log('Prime subscription expired, status updated.');
+           
               });
             }
           }

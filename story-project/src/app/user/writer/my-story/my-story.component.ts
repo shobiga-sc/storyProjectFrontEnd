@@ -6,6 +6,7 @@ import { Story } from '../../../models/story.model';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-my-story',
@@ -23,7 +24,8 @@ export class MyStoryComponent {
   constructor(
   private storyApiService: StoryApiService,
   private userApiService: UserApiService,
-  private location:Location
+  private location:Location,
+  private router:Router
   ){
 
   }
@@ -39,20 +41,20 @@ export class MyStoryComponent {
     this.storyApiService.getStoryByStatusAnduserId(localStorage.getItem('userId') as string, "DRAFT").subscribe(
       (data: Story[]) => { 
         this.draftStories = data;
-        console.log("draft: ", this.draftStories);
+       
       }
     );
      
     this.storyApiService.getStoryByStatusAnduserId(localStorage.getItem('userId') as string, "PUBLISHED").subscribe(
       (data: Story[]) => { 
         this.publishedStories = data;
-        console.log("published: ", this.publishedStories);
+        
       }
     );
   }
 
   back(){
-    this.location.back();
+    this.router.navigate(['/user']);
   }
 
 

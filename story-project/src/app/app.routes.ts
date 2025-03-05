@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { authGuard } from './auth.guard';
-
+import { HomeComponent } from './user/home/home.component';
 export const routes: Routes = [
+   
     {
         path: '',
         loadChildren: () =>

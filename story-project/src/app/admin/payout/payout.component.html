@@ -1,0 +1,45 @@
+<div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+      <div class="payment-card">
+        <h6>Process Payout for Writer</h6>
+        <form (ngSubmit)="processPayout()" #payoutForm="ngForm">
+        
+          <div class="form-group">
+            <label for="writerId">Writer ID:</label>
+            <input type="text" [(ngModel)]="writerId" name="writerId" required readonly class="form-control" />
+          </div>
+  
+       
+          <div class="form-group">
+            <label for="writerEmail">Writer Email:</label>
+            <input type="email" [(ngModel)]="writerEmail" name="writerEmail" required readonly class="form-control" />
+          </div>
+  
+       
+          <div class="form-group">
+            <label for="amount">Amount (₹):</label>
+            <input type="number" [(ngModel)]="amount" name="amount" required readonly class="form-control" min="1" />
+          </div>
+  
+          <div class="form-group">
+            <label for="month">Month:</label>
+            <input type="number" [(ngModel)]="month" name="month" min="1" max="12" required readonly class="form-control" />
+          </div>
+  
+        
+          <div class="form-group">
+            <label for="year">Year:</label>
+            <input type="number" [(ngModel)]="year" name="year" required readonly class="form-control" min="2020" />
+          </div>
+  
+        
+          <div class="form-actions">
+            
+            <button type="submit" class="btn btn-success" [disabled]="!payoutForm.valid">Process Payout</button>
+           <button type="button" (click)="closeModalAction()" class="btn btn-secondary">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

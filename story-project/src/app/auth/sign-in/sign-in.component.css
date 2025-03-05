@@ -97,16 +97,23 @@
     border-radius: 10px;
     height: 300px;
     align-content: center;
+    /* display: flex;
+    flex-direction: column;
+    gap: 20px; */
+   
 }
 
 .signup-section h1 {
     font-size: 28px;
-    margin-bottom: 10px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    padding: 20px;
 }
 
 .signup-section h5 {
     font-size: 16px;
     margin-bottom: 20px;
+    padding: 20px;
 }
 
 

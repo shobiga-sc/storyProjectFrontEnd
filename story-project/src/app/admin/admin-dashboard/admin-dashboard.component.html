@@ -53,6 +53,7 @@
           <th>Unpaid Reads</th>
           <th>Popularity Score</th>
           <th>Earnings (₹)</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -62,6 +63,12 @@
           <td>{{ writer.unpaidReads }}</td>
           <td>{{ writer.popularityScore }}</td>
           <td>{{ writer.earnings ? (writer.earnings | currency:'INR') : '₹0.00' }}</td>
+          <td>
+              <button *ngIf="!isPaid(writer.authorId)" (click)="openPayoutModal(writer)">Pay</button>
+              <button *ngIf="isPaid(writer.authorId)" class="paid-button" disabled>Paid</button>
+            
+            
+          </td>
         </tr>
       </tbody>
     </table>
@@ -69,6 +76,14 @@
   <ng-template #noData>
     <p>No earnings data available.</p>
   </ng-template>
-
+  
+  <app-payout *ngIf="showModal" 
+  [writerId]="writerId"
+  [writerEmail]="writerEmail"
+  [amount]="amount"
+  [month]="month"
+  [year]="year"
+  [showModal]="showModal"
+  (closeModal)="closeModal()"></app-payout>
 
 </div>

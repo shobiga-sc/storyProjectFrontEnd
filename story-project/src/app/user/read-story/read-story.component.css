@@ -146,6 +146,11 @@
     cursor:auto ;
 }
 
+.about-story{
+    padding: 30px;
+}
+
+
 
 
 .button-34 {
@@ -166,4 +171,9 @@
 .heading{
     max-width: 600px;
     max-height: 100px;
+}
+
+
+h3{
+    margin: 10px 0 !important;
 }

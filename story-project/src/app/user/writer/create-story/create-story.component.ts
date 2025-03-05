@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-create-story',
   standalone: true,
-  imports: [ReactiveFormsModule, QuillModule, CommonModule, TiptapEditorComponent, FormsModule],
+  imports: [ReactiveFormsModule, QuillModule, CommonModule,FormsModule],
   templateUrl: './create-story.component.html',
   styleUrl: './create-story.component.css'
 })

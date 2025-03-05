@@ -102,11 +102,13 @@
 .signup-section h1 {
     font-size: 28px;
     margin-bottom: 10px;
+    padding: 20px;
 }
 
 .signup-section h5 {
     font-size: 16px;
     margin-bottom: 20px;
+    padding: 20px;
 }
 
 

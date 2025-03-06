@@ -57,11 +57,11 @@ export class SignUpComponent {
           this.router.navigate(['']);
         });
       },
-      error: () => {
+      error: (error) => {
         Swal.fire({
           icon: 'error',
           title: 'Signup Failed!',
-          text:'Something went wrong. Please try again. ' ,
+          text: error.error?.message || 'Something went wrong. Please try again.', 
           confirmButtonColor: '#d33',
           confirmButtonText: 'Retry'
         });

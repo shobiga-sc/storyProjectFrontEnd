@@ -18,6 +18,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { StoryApiService } from '../../../services/story-api.service'; 
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+
 export const FontSize = Extension.create({
   name: 'fontSize',
   addGlobalAttributes() {

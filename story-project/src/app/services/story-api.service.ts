@@ -25,6 +25,11 @@ export class StoryApiService {
   deleteStory(storyId: string): Observable<Story> {
     return this.http.delete<Story>(`${this.baseUrl}/api/story/${storyId}`);
   }
+
+  deleteStoriesByUserId(userId: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/api/story/user/${userId}`);
+  }
+  
   getStoryByStatusAnduserId(userId: string, status: string): Observable<Story[]> {
     return this.http.get<Story[]>(`${this.baseUrl}/api/story/${userId}/${status}`);
   }

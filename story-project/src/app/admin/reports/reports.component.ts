@@ -62,22 +62,32 @@ export class ReportsComponent {
     });
   }
   
+
+
   deleteUser(userId: string, report: Report) {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'This will permanently delete the user!',
+      text: 'This will permanently delete the account along with all the user stories!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete user!',
+      confirmButtonText: 'Yes, delete everything!',
       cancelButtonText: 'No, cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.userApiService.deleteUserById(userId).subscribe(() => {
-          report.isUserDeleted = true;  
-          Swal.fire('Deleted!', 'The user has been removed.', 'success');
+  
+      
+        this.storyApiService.deleteStoriesByUserId(userId).subscribe(() => {
+          
+          this.userApiService.deleteUserById(userId).subscribe(() => {
+            report.isUserDeleted = true;  
+            report.isStoryDeleted = true;
+            Swal.fire('Deleted!', 'The user account and stories have been removed.', 'success');
+           
+          });
         });
       }
     });
   }
+  
   
 }

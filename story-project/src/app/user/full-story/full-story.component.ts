@@ -48,19 +48,7 @@ export class FullStoryComponent {
 
     this.userApiService.getUserById(this.userId).subscribe(userData => {
 
-
-
-
       this.user = userData;
-
-
-      console.log(userData);
-
-
-
-
-
-
 
       this.storyApiService.getStoryById(this.storyId).subscribe(storyData => {
         this.story = storyData;
@@ -82,11 +70,13 @@ export class FullStoryComponent {
             new Date(this.user.signUpDate) < new Date(this.data)
           ) {
             if (this.user.freeRead.includes(this.storyId))
-                this.trackStoryRead();
+              this.trackStoryRead();
           }
 
           else {
-            this.trackStoryRead();
+            if (localStorage.getItem('userRole') != "ROLE_ADMIN") {
+              this.trackStoryRead();
+            }
           }
         }
 

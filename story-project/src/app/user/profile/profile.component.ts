@@ -127,23 +127,29 @@ export class ProfileComponent {
     return this.months.find(m => m.value === month)?.name || 'Unknown Month';
   }
 
-    deleteUser() {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: 'This will permanently delete the you account!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete user!',
-        cancelButtonText: 'No, cancel'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.userApiService.deleteUserById(localStorage.getItem('userId') as string).subscribe(() => {
-           
-            Swal.fire('Deleted!', 'The user has been removed.', 'success');
-            this.router.navigate(['/'])
+  deleteUser() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This will permanently delete your account along with all your stories!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete everything!',
+      cancelButtonText: 'No, cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const userId = localStorage.getItem('userId') as string;
+  
+       
+        this.storyApiService.deleteStoriesByUserId(userId).subscribe(() => {
+          
+      
+          this.userApiService.deleteUserById(userId).subscribe(() => {
+            Swal.fire('Deleted!', 'Your account and stories have been removed.', 'success');
+            this.router.navigate(['/']);
           });
-        }
-      });
-    }
+        });
+      }
+    });
+  }
   
 }

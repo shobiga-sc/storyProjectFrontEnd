@@ -99,6 +99,9 @@ h2 {
     text-transform: uppercase;
     letter-spacing: 1px;
     padding: 10px auto;
+     font-size: 30px !important;
+     
+
     /* margin: 20px 0 10px; */
    
     border-left: 6px solid #ff5722;

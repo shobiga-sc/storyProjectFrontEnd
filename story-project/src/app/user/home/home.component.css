@@ -410,6 +410,7 @@ h5 {
     border-left: 6px solid #ff5722;
     background: rgba(255, 87, 34, 0.1);
     border-radius: 5px;
+    font-size: 23px  !important
 }
 
 .no-results {

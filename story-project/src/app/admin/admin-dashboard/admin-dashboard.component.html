@@ -37,18 +37,25 @@
   <input type="number" [(ngModel)]="selectedYear" min="2020">
 
   <button (click)="fetchStats()">Fetch Stats</button>
+
   </div>
+
   <div class="info">Total Reads: {{ totalReads }}</div>
   <div class="info">Paid Reads: {{ paidReads }}</div>
   <div class="info">Unpaid Reads: {{ unpaidReads }}</div>
   <div class="info">Total Revenue: ₹{{ totalRevenue }}</div>
   <div class="info splitup"> App Share : ₹{{ appShare}}  |  Writers' Pool :  ₹{{ writerPool }} | Platform Fee:  ₹{{ platformFee}} </div>
 
+  <div style="width: 80%; margin: 0 auto; padding-top: 20px;">
+    <canvas #chartCanvas></canvas>
+  </div>
+  
+
   <div *ngIf="earnings.length > 0; else noData">
     <table>
       <thead>
         <tr>
-          <th>Author ID</th>
+          <th>Author Name</th>
           <th>Paid Reads</th>
           <th>Unpaid Reads</th>
           <th>Popularity Score</th>
@@ -58,7 +65,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let writer of earnings">
-          <td>{{ writer.authorId }}</td>
+          <td>{{ writer.authorName }}</td>
           <td>{{ writer.paidReads }}</td>
           <td>{{ writer.unpaidReads }}</td>
           <td>{{ writer.popularityScore }}</td>

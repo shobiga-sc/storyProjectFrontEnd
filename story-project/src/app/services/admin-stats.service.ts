@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
+import { HttpParams } from '@angular/common/http'; 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,4 +33,17 @@ export class AdminStatsService {
       params: { month: month.toString(), year: year.toString() },
     });
   }
+
+  // getYearlyReadsStats(year: number): Observable<any> {
+  //   return this.http.get<any>(`${this.baseUrl}/api/reads/stats/${year.toString()}`);
+  // }
+
+  getTotalReadsPerAuthor(month: number, year: number): Observable<any[]> {
+    const params = new HttpParams()
+      .set('month', month.toString())
+      .set('year', year.toString());
+
+    return this.http.get<any[]>(`${this.baseUrl}/api/reads/totalReadsPerAuthor`, { params });
+  }
+  
 }

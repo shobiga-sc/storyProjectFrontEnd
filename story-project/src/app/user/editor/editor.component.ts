@@ -22,6 +22,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
 import { Image } from '@tiptap/extension-image';
+
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 
@@ -98,6 +99,7 @@ const CustomImage = ImageExtension.extend({
 
 
 
+
 @Component({
   selector: 'app-editor',
   standalone: true,
@@ -131,7 +133,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         StarterKit,
         Underline,
         Link.configure({ openOnClick: true }),
-        CustomImage, 
+        CustomImage,
         TextStyle,
         Color,
         BulletListExtension,
@@ -150,16 +152,27 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loadStoryContent();
     }
   }
-
+  
   loadStoryContent(): void {
     this.storyApiService.getStoryById(this.storyId).subscribe(
       (data: Story) => {
         this.story = data;
         this.storyContent = data.content || '<p>Start writing...</p>';
-  
+
         console.log('Loaded Content:', this.storyContent);
-  
-        
+
+
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = this.storyContent;
+
+        tempDiv.querySelectorAll('img').forEach(img => {
+          const src = img.getAttribute('src');
+          if (src && src.startsWith('data:image')) {
+            img.setAttribute('src', src);
+          }
+        });
+
+        this.storyContent = tempDiv.innerHTML;
         this.editor.commands.setContent(this.storyContent);
       },
       error => {
@@ -167,8 +180,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     );
   }
-  
-  
 
 
   onUpdate(editor: Editor): void {

@@ -19,7 +19,7 @@ bootstrapApplication(AppComponent, {
       positionClass: 'toast-top-right', 
       closeButton: true,
       progressBar: true,
-      timeOut: 3000,
+      timeOut: 5000,
       tapToDismiss: false,
       preventDuplicates: true,
       enableHtml: true,

@@ -110,7 +110,7 @@ export class AdminDashboardComponent {
             authorName: users[index]?.username || 'Unknown',
             paidReads: Number(writer.paidReads) || 0,
             unpaidReads: Number(writer.unpaidReads) || 0,
-            popularityScore: Number(writer.popularityScore) || 0,
+            popularityScore: Number(writer.popularityScore.toFixed()) || 0,
             earnings: Number(writer.earnings) || 0
           }));
         }).catch(error => {

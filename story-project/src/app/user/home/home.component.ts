@@ -8,6 +8,7 @@ import { StoryApiService } from '../../services/story-api.service';
 import { CommonModule } from '@angular/common';
 import { PaymentComponent } from '../payment/payment.component';
 import Swal from 'sweetalert2';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,7 @@ export class HomeComponent {
   stories: Story[] = [];
   filteredStories: Story[] = [];
   userRole: string = localStorage.getItem('userRole') as string;
+  totalReads: number = 0;
  
 
   constructor(private userApiService: UserApiService,
@@ -43,9 +45,27 @@ export class HomeComponent {
       (data: Story[]) => { 
         this.stories = data;
         this.filteredStories = [...this.stories];
+        this.fetchTotalReadsAndSort();
+        this.fetchTotalLikesAndSort();
       }
+
     );
   }
+ 
+
+
+  fetchTotalReadsAndSort() {
+    this.filteredStories.sort((a, b) => (b.viewCount ?? 0) - (a.viewCount ?? 0));
+    
+  }
+  
+  fetchTotalLikesAndSort() {
+   
+      this.filteredStories.sort((a, b) => (b.likeCount ?? 0) - (a.likeCount ?? 0));
+    
+    
+  }
+
   searchStories(event: any): void {
     const query = event?.target?.value?.toLowerCase().trim() || '';
   
@@ -61,7 +81,11 @@ export class HomeComponent {
       (story?.tags && story.tags.some(tag => tag.toLowerCase().includes(query)))
     );
   }
-  
+
+
+  getTotalReads(storyId: string): Observable<number> {
+    return this.storyApiService.getTotalReads(storyId);
+  }
   
   
 

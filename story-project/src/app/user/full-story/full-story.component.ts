@@ -8,10 +8,13 @@ import { UserApiService } from '../../services/user-api.service';
 import { CommonModule } from '@angular/common';
 import { PaymentComponent } from '../payment/payment.component';
 import { Location } from '@angular/common';
+import { NotificationService } from '../../services/notification.service';
+import { ToastrModule } from 'ngx-toastr';
+
 @Component({
   selector: 'app-full-story',
   standalone: true,
-  imports: [CommonModule, PaymentComponent],
+  imports: [CommonModule, PaymentComponent, ToastrModule],
   templateUrl: './full-story.component.html',
   styleUrl: './full-story.component.css'
 })
@@ -37,7 +40,8 @@ export class FullStoryComponent {
     private route: ActivatedRoute,
     private storyApiService: StoryApiService,
     private userApiService: UserApiService,
-    private location: Location
+    private location: Location,
+    private notificationService: NotificationService
   ) {
     this.data.setMonth(this.data.getMonth() + 1);
 
@@ -86,24 +90,36 @@ export class FullStoryComponent {
           !this.user.primeSubscriber &&
           this.user.signUpDate &&
           new Date(this.user.signUpDate) < new Date(this.data) &&
-          Array.isArray(this.user.freeRead) &&
-          this.user.freeRead.length < 3
+          Array.isArray(this.user.freeRead)
         ) {
-          if (!this.user.freeRead.includes(this.storyId)) {
-
-            if (!(this.user.freeRead.length >= 3)) {
-              this.user.freeRead.push(this.storyId);
-
-              this.userApiService.updateFreeRead(this.userId, [...this.user.freeRead]).subscribe(() => { });
+          if (this.user.freeRead.length < 3) {
+            if (this.user.freeRead.length === 0) {
+              this.notificationService.showNotification(
+                'Welcome! As a new user, you can read up to 3 prime stories for free during your first month.'
+              );
             }
-          }
-
-          if (this.user.freeRead.includes(this.storyId))
+        
+            if (!this.user.freeRead.includes(this.storyId)) {
+              this.user.freeRead.push(this.storyId);
+              this.notificationService.showNotification(`You have used ${this.user.freeRead.length} out of 3 free reads.`);
+              
+              this.userApiService.updateFreeRead(this.userId, [...this.user.freeRead]).subscribe(() => {
+                const freeReadCount = this.user?.freeRead.length;
+                
+                if (freeReadCount) {
+                  this.notificationService.showNotification(`You have used ${freeReadCount} out of 3 free reads.`);
+                }
+              });
+            } else {
+              this.notificationService.showNotification('You have already accessed this free story.');
+            }
+        
             this.shouldBlur = false;
-
-
+          } else {
+            this.notificationService.showNotification('You have used all 3 free reads. Subscribe to access more stories.');
+          }
         }
-
+        
         if (
           this.story.paid &&
           this.user &&
@@ -111,12 +127,12 @@ export class FullStoryComponent {
           this.user.signUpDate &&
           new Date(this.user.signUpDate) < new Date(this.data)
         ) {
-          if (this.user.freeRead.includes(this.storyId))
+          if (this.user.freeRead.includes(this.storyId)) {
             this.shouldBlur = false;
+            this.notificationService.showNotification('This is one of your free read stories. Subscribe to read more prime stories.');
+          }
         }
-
-
-
+        
 
 
         if (this.shouldBlur && localStorage.getItem('userRole') != "ROLE_ADMIN") {

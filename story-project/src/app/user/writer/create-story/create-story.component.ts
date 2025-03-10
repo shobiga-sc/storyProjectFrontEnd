@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 import { CommonModule } from '@angular/common';
-import { TiptapEditorComponent } from '../tiptap-editor/tiptap-editor.component';
 import { Router } from '@angular/router';
 import { StoryContentService } from '../../../services/story-content.service'; 
 import { User } from '../../../models/user.model';

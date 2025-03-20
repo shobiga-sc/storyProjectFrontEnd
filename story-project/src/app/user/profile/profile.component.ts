@@ -4,7 +4,6 @@ import { StoryApiService } from '../../services/story-api.service';
 import { User } from '../../models/user.model';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { PaymentComponent } from '../payment/payment.component';
 import { FollowService } from '../../services/follow.service';
 import { WriterEarnings } from '../../models/writer-earnings.model';
 import Swal from 'sweetalert2';
@@ -13,7 +12,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, RouterLink, PaymentComponent],
+  imports: [CommonModule, RouterLink],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -62,7 +61,7 @@ export class ProfileComponent {
       });
 
 
-      
+
     }
 
   }
@@ -92,26 +91,26 @@ export class ProfileComponent {
         );
 
 
-        this.storyApiService.getCurrentWriterEarnings(this.userId, this.month, this.year).subscribe(
-          (data: WriterEarnings) => {
-            this.earnings = {
-              authorId: data.authorId || '',
-              paidReads: Number(data.paidReads) || 0,
-              unpaidReads: Number(data.unpaidReads) || 0,
-              popularityScore: Number(data.popularityScore) || 0,
-              earnings: Math.round(Number(data.earnings)) || 0 
-            };
-           
-          },
-          (error) => {
-            console.error('Error fetching writer earnings', error);
-          }
-        );
-        
+      this.storyApiService.getCurrentWriterEarnings(this.userId, this.month, this.year).subscribe(
+        (data: WriterEarnings) => {
+          this.earnings = {
+            authorId: data.authorId || '',
+            paidReads: Number(data.paidReads) || 0,
+            unpaidReads: Number(data.unpaidReads) || 0,
+            popularityScore: Number(data.popularityScore) || 0,
+            earnings: Math.round(Number(data.earnings)) || 0
+          };
+
+        },
+        (error) => {
+          console.error('Error fetching writer earnings', error);
+        }
+      );
+
     }
   }
-  
-  
+
+
 
   onMonthChange(event: Event): void {
     this.month = Number((event.target as HTMLSelectElement).value);
@@ -138,11 +137,11 @@ export class ProfileComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         const userId = localStorage.getItem('userId') as string;
-  
-       
+
+
         this.storyApiService.deleteStoriesByUserId(userId).subscribe(() => {
-          
-      
+
+
           this.userApiService.deleteUserById(userId).subscribe(() => {
             Swal.fire('Deleted!', 'Your account and stories have been removed.', 'success');
             this.router.navigate(['/']);
@@ -151,5 +150,5 @@ export class ProfileComponent {
       }
     });
   }
-  
+
 }

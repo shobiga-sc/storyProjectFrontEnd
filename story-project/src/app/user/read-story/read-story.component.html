@@ -43,7 +43,7 @@
                 <div class="author-details">
                     <div>
                         <h5>Author Name: </h5>
-                        <p> {{story?.authorName}}</p>
+                        <p class="author-name"> {{story?.authorName}}</p>
 
                     </div>
                     <div class="edit">
@@ -54,11 +54,13 @@
                             {{ following ? 'Unfollow' : 'Follow' }}
                         </button>
 
-                        <button *ngIf="userId === (story?.authorId || '')" class="button-34" [routerLink]="['/user/edit-story', storyId]">
-                                Edit Story 
+                        <button *ngIf="userId === (story?.authorId || '')" class="button-34"
+                            [routerLink]="['/user/edit-story', storyId]">
+                            Edit Story
                         </button>
-                        <button *ngIf="userId === (story?.authorId || '')" class="button-34"  (click)="deleteStory()" style="margin-left: 20px;">
-                           Delete Story
+                        <button *ngIf="userId === (story?.authorId || '')" class="button-34" (click)="deleteStory()"
+                            style="margin-left: 20px;">
+                            Delete Story
                         </button>
 
 

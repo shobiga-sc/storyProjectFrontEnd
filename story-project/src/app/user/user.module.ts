@@ -17,7 +17,7 @@ import { EditorComponent } from './editor/editor.component';
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule, HomeComponent, CreateStoryComponent, TiptapEditorComponent, MyStoryComponent, 
+    CommonModule, HomeComponent, CreateStoryComponent, TiptapEditorComponent, MyStoryComponent,
     ReadStoryComponent, FullStoryComponent, PaymentComponent, ProfileComponent, SavedStoriesComponent,
     EditorComponent,
     RouterModule.forChild([
@@ -25,12 +25,12 @@ import { EditorComponent } from './editor/editor.component';
       { path: "new-story", component: CreateStoryComponent },
       { path: "write-story", component: TiptapEditorComponent },
       { path: "my-story", component: MyStoryComponent },
-      {path: "read-story/:id", component: ReadStoryComponent},
-      {path: "full-story/:id", component: FullStoryComponent},
-      {path: "payment", component: PaymentComponent},
-      {path: "profile", component: ProfileComponent},
-      {path: "saved-stories", component: SavedStoriesComponent},
-      {path: "edit-story/:id", component: EditorComponent},
+      { path: "read-story/:id", component: ReadStoryComponent },
+      { path: "full-story/:id", component: FullStoryComponent },
+      { path: "payment", component: PaymentComponent },
+      { path: "profile", component: ProfileComponent },
+      { path: "saved-stories", component: SavedStoriesComponent },
+      { path: "edit-story/:id", component: EditorComponent },
     ])
   ]
 })

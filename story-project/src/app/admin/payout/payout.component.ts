@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { PayoutService } from '../../services/payout.service';
 import Swal from 'sweetalert2';
-import { Payout } from '../../models/payout.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Output, EventEmitter } from '@angular/core';
+import { UserApiService } from '../../services/user-api.service'; 
 
 @Component({
   selector: 'app-payout',
@@ -19,10 +19,22 @@ export class PayoutComponent {
   @Input() amount: number = 0;
   @Input() month: number = 0;
   @Input() year: number = 0;
-  @Input() showModal: boolean = false;  
+  @Input() showModal: boolean = false; 
+  writerName: string = ''; 
 
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
-  constructor(private payoutService: PayoutService) {}
+
+
+
+  constructor(private payoutService: PayoutService, private userApiService: UserApiService) {}
+
+  ngOnInit() {
+    if (this.writerId) {
+      this.userApiService.getUserById(this.writerId).subscribe(response => {
+        this.writerName = response.username;
+      });
+    }
+  }
 
   processPayout(): void {
     if (!this.writerId || !this.amount || !this.month || !this.year) {
@@ -34,34 +46,36 @@ export class PayoutComponent {
       return;
     }
 
-    const payoutData = {
-      writerId: this.writerId,
-      writerEmail: this.writerEmail,
-      amount: this.amount,
-      month: this.month,
-      year: this.year
-    };
+    this.userApiService.getUserById(this.writerId).subscribe(response => {
+      const payoutData = {
+        writerId: this.writerId,
+        writerEmail: this.writerEmail,
+        amount: this.amount,
+        month: this.month,
+        year: this.year,
+        writerName: response.username 
+      };
 
-    this.payoutService.processPayout(payoutData).subscribe(
-      (response) => {
-        Swal.fire({
-          title: 'Success',
-          text: 'Payout processed successfully.',
-          icon: 'success'
-        });
-        this.closeModal.emit();  
-      },
-      (error) => {
-        Swal.fire({
-          title: 'Error',
-          text: 'No account details found. Failed to process payout. Please try again.',
-          icon: 'error'
-        });
-      }
-    );
+      this.payoutService.processPayout(payoutData).subscribe(
+        () => {
+          Swal.fire({
+            title: 'Success',
+            text: 'Payout processed successfully.',
+            icon: 'success'
+          });
+          this.closeModal.emit();  
+        },
+        () => {
+          Swal.fire({
+            title: 'Error',
+            text: 'No account details found. Failed to process payout. Please try again.',
+            icon: 'error'
+          });
+        }
+      );
+    });
   }
 
- 
   closeModalAction(): void {
     this.closeModal.emit();  
   }

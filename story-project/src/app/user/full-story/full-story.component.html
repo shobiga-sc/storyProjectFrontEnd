@@ -24,7 +24,7 @@
                             title="{{ isLiked ? 'UnLike' : 'Like' }}" (click)="toggleLikeStory()">
                     </div>
 
-                    <div *ngIf="userId !== story?.authorId"  (click)="reportStory()" >
+                    <div *ngIf="userId !== story?.authorId" (click)="reportStory()">
                         <img src="report.png" alt="Report Story" class="icons" title="report">
                     </div>
 
@@ -41,11 +41,11 @@
     </div>
 
 
-    <!-- <div class="story-content"   [innerHTML]="story?.content">
-    </div> -->
 
-    <div class="story-content" [innerHTML]="visibleContent" [ngClass]="{'border': shouldBlur}"></div>
-    <div class="story-content-hide" *ngIf="shouldBlur" [ngClass]="{'blurred': shouldBlur}" [innerHTML]="hiddenContent"></div>
+
+    <div class="story-content" [innerHTML]="sanitizedContent" [ngClass]="{'border': shouldBlur}"></div>
+    <div class="story-content-hide" *ngIf="shouldBlur" [ngClass]="{'blurred': shouldBlur}" [innerHTML]="hiddenContent">
+    </div>
 
     <div *ngIf="shouldBlur && (userRole != 'ROLE_ADMIN')" class="blur-overlay">
         <div (click)="showFullContent()" class="read-more">Subscribe to Prime to Read More</div>

@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment.development';
 export class SubscriptionService {
   private baseUrl = environment.baseUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getSubscriptionAmount(): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/api/admin/subscription/amount`);

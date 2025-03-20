@@ -17,7 +17,7 @@
     gap: 20px;
     align-items: flex-start;
     padding: 25px 10px ;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 15px #ffa387;
     border-radius: 20px;
    
 }
@@ -43,12 +43,12 @@
 .card {
     /* width: 180px; */
     position: relative;
-    cursor: pointer;
+    
     margin: 10px 5px;
 }
 
 .card .poster {
-    width: 80%;
+    width: 90%;
     border-radius: 15px;
    
 }
@@ -82,7 +82,7 @@
 }
 
 .read-story button {
-    background-color: #007bff;
+    background-color:  #ff4b14;
     width: 98%;
     color: white;
     border: none;
@@ -91,10 +91,18 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s ease;
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif !important;
 }
 
 .read-story button:hover {
-    background-color: #0056b3;
+    background-color:  #ff3c00;;
+}
+
+.author-name{
+    font-size: 20px !important;
+    color: #ff4b14;
+    /* box-shadow: 2px 2px 5px #ff8f6d ; */
+    border-radius: 7px;
 }
 
 .story-description {
@@ -106,7 +114,7 @@
     text-align: center;
     margin: auto;
     padding: 20px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 15px #ff8560;
 }
 
 .story-content {
@@ -154,7 +162,7 @@
 
 
 .button-34 {
-    background-color: #007bff;
+    background-color:  #ff4b14;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -162,10 +170,11 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s ease;
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif !important;
 }
 
 .button-34:hover{
-    background-color: #0354aa;
+    background-color: #ff3c00;
 }
 
 .heading{

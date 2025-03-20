@@ -6,24 +6,21 @@
 
             <div class="dropdown">
                 <span class="dropdown-label welcome"> Welcome {{user?.username}} ! </span>
-                <!-- <span class="dropdown-label">Browse ▼</span> -->
-                <!-- <div class="dropdown-menu">
-                    <a href="#">Discover Stories</a>
-                    <a href="#">Top Authors</a>
-                </div> -->
             </div>
 
             <input type="text" (keyup)="searchStories($event)" class="search-bar" placeholder=" Search...">
         </div>
 
         <div class="nav-right">
-            <app-payment *ngIf="user && !user.primeSubscriber && (userRole != 'ROLE_ADMIN')" [userId]="user.id"></app-payment>
-            <div class="prime" *ngIf="user && user.primeSubscriber && (userRole != 'ROLE_ADMIN')">You are a Prime Subscriber</div>
+            <app-payment *ngIf="user && !user.primeSubscriber && (userRole !== 'ROLE_ADMIN')"
+                [userId]="user.id"></app-payment>
+            <div class="prime" *ngIf="user && user.primeSubscriber && (userRole !== 'ROLE_ADMIN')">You are a Prime
+                Subscriber</div>
 
-            <div class="prime" *ngIf="(userRole == 'ROLE_ADMIN')" routerLink="/admin">Go to admin dashboard</div>
+            <div class="prime" *ngIf="(userRole === 'ROLE_ADMIN')" routerLink="/admin">Go to admin dashboard</div>
 
             <div class="dropdown">
-                <span class="dropdown-label">Writer ▼</span>
+                <span class="dropdown-label" *ngIf="(userRole !== 'ROLE_ADMIN')">Writer ▼</span>
                 <div class="dropdown-menu">
                     <a routerLink="new-story">Write a new Story +</a>
                     <a routerLink="my-story">My Stories 📝</a>
@@ -53,15 +50,15 @@
                 <div class="stories">
 
                     <div *ngFor="let story of filteredStories" class="card"
-                        [routerLink]="['/user/read-story', story.id]">
+                        [routerLink]="['/user/read-story', story.id]" title="click to see the story">
                         <div class="prime-div">
                             <img *ngIf="story.paid" src="prime.png" alt="prime" class="prime-logo top">
                             <img src="{{story.posterUrl}}" alt="story poster" class="bg poster">
                             <div>
-                                <p>{{story.genre}}</p>
-                                
+                                <p title="Genre">{{story.genre}}</p>
+
                             </div>
-                         
+
                         </div>
 
                     </div>

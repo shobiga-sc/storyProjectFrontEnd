@@ -4,22 +4,23 @@ import { StoryApiService } from '../../services/story-api.service';
 import { UserApiService } from '../../services/user-api.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-reports',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.css'
 })
 export class ReportsComponent {
-  
+
   reports: Report[] = [];
-  
+
   constructor(
     private storyApiService: StoryApiService,
     private userApiService: UserApiService
-  ){}
+  ) { }
 
   ngOnInit(): void {
     this.fetchReports();
@@ -27,16 +28,30 @@ export class ReportsComponent {
 
   fetchReports() {
     this.storyApiService.getAllReports().subscribe((data: any[]) => {
-      this.reports = data.map(report => ({
+      const reportsWithNames = data.map(report => ({
         ...report,
-        isReportAccepted: report.reportAccepted, 
+        isReportAccepted: report.reportAccepted,
         isStoryDeleted: report.storyDeleted,
-        isUserDeleted: report.isUserDeleted
+        isUserDeleted: report.isUserDeleted,
+        reportedByName: '', 
+        reportedAuthorName: ''
       }));
-    
+  
+      reportsWithNames.forEach(report => {
+        this.userApiService.getUserById(report.reportedByUserId).subscribe(user => {
+          report.reportedByName = user.username;
+        });
+  
+        this.userApiService.getUserById(report.reportedAuthorId).subscribe(user => {
+          report.reportedAuthorName = user.username;
+        });
+      });
+  
+      this.reports = reportsWithNames;
     });
   }
   
+
   acceptReport(report: Report) {
     this.storyApiService.updateReportStatus(report.id ?? '', true).subscribe(() => {
       report.isReportAccepted = true;
@@ -55,13 +70,13 @@ export class ReportsComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.storyApiService.deleteStory(storyId).subscribe(() => {
-          report.isStoryDeleted = true;  
+          report.isStoryDeleted = true;
           Swal.fire('Deleted!', 'The story has been removed.', 'success');
         });
       }
     });
   }
-  
+
 
 
   deleteUser(userId: string, report: Report) {
@@ -74,20 +89,20 @@ export class ReportsComponent {
       cancelButtonText: 'No, cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-  
-      
+
+
         this.storyApiService.deleteStoriesByUserId(userId).subscribe(() => {
-          
+
           this.userApiService.deleteUserById(userId).subscribe(() => {
-            report.isUserDeleted = true;  
+            report.isUserDeleted = true;
             report.isStoryDeleted = true;
             Swal.fire('Deleted!', 'The user account and stories have been removed.', 'success');
-           
+
           });
         });
       }
     });
   }
-  
-  
+
+
 }

@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './auth.guard';
 import { HomeComponent } from './user/home/home.component';
 export const routes: Routes = [
-   
+
     {
         path: '',
         loadChildren: () =>
@@ -13,12 +13,12 @@ export const routes: Routes = [
         path: 'user',
         loadChildren: () =>
             import('./user/user.module').then((m) => m.UserModule),
-        canActivate: [authGuard] 
+        canActivate: [authGuard]
     },
     {
         path: 'admin',
-        loadChildren: () => 
+        loadChildren: () =>
             import('./admin/admin.module').then((m) => m.AdminModule),
-        canActivate: [authGuard] 
+        canActivate: [authGuard]
     }
 ];

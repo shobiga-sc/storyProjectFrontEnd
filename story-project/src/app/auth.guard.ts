@@ -1,5 +1,5 @@
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from './services/auth.service'; 
+import { AuthService } from './services/auth.service';
 import { inject } from '@angular/core';
 
 export const authGuard: CanActivateFn = (route, state) => {
@@ -10,12 +10,12 @@ export const authGuard: CanActivateFn = (route, state) => {
   const role = localStorage.getItem('userRole');
 
   if (!token) {
-    router.navigate(['/']); 
+    router.navigate(['/']);
     return false;
   }
 
   if (state.url.startsWith('/admin') && role !== 'ROLE_ADMIN') {
-    router.navigate(['/user']); 
+    router.navigate(['/user']);
     return false;
   }
 

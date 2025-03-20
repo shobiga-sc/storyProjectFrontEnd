@@ -8,4 +8,6 @@ export interface Report{
     reason?: string;
     isReportAccepted?: boolean;
     reportedAt?: Date;
+    reportedByName?: string;
+    reportedAuthorName?: string;
 }

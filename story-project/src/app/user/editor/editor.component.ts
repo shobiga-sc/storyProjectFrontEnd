@@ -14,7 +14,6 @@ import { Extension } from '@tiptap/core';
 import { StoryContentService } from '../../services/story-content.service';
 import { Story } from '../../models/story.model';
 import { HttpClient } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
 import { StoryApiService } from '../../services/story-api.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -22,10 +21,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
 import { Image } from '@tiptap/extension-image';
-
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-
-
 
 
 const BulletListExtension = BulletList.extend({ name: 'customBulletList' });
@@ -152,14 +148,12 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loadStoryContent();
     }
   }
-  
+
   loadStoryContent(): void {
     this.storyApiService.getStoryById(this.storyId).subscribe(
       (data: Story) => {
         this.story = data;
         this.storyContent = data.content || '<p>Start writing...</p>';
-
-        console.log('Loaded Content:', this.storyContent);
 
 
         const tempDiv = document.createElement('div');

@@ -10,14 +10,14 @@ import path from 'path';
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule, SignInComponent, SignUpComponent, 
+    CommonModule, SignInComponent, SignUpComponent,
     RouterModule.forChild([
-      { path:'', component: SignInComponent },
-      { path:'sign-up', component: SignUpComponent }
+      { path: '', component: SignInComponent },
+      { path: 'sign-up', component: SignUpComponent }
     ])
   ],
   exports: []
 })
-export class AuthModule { 
-  
+export class AuthModule {
+
 }

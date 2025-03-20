@@ -22,7 +22,7 @@ server.get('*', async (req, res, next) => {
           provideHttpClient(),
         ],
       }),
-      {} // ✅ Fixed: Provide an empty object as the second argument
+      {} 
     );
 
     res.status(200).send(html);

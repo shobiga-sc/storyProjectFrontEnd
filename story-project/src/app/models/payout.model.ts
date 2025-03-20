@@ -4,5 +4,6 @@ export interface Payout {
     amount: number;
     month: number;
     year: number;
+    writerName?: string
   }
   

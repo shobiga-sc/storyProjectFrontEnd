@@ -5,17 +5,17 @@ import Underline from '@tiptap/extension-underline';
 import Link from '@tiptap/extension-link';
 import ImageExtension from '@tiptap/extension-image';
 import TextStyle from '@tiptap/extension-text-style';
-import Color from '@tiptap/extension-color'; 
+import Color from '@tiptap/extension-color';
 import BulletList from '@tiptap/extension-bullet-list';
 import OrderedList from '@tiptap/extension-ordered-list';
 import Heading from '@tiptap/extension-heading';
 import TextAlign from '@tiptap/extension-text-align';
 import { Extension } from '@tiptap/core';
-import { StoryContentService } from '../../../services/story-content.service'; 
+import { StoryContentService } from '../../../services/story-content.service';
 import { Story } from '../../../models/story.model';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { StoryApiService } from '../../../services/story-api.service'; 
+import { StoryApiService } from '../../../services/story-api.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
@@ -30,8 +30,8 @@ export const FontSize = Extension.create({
             default: null,
             parseHTML: (element) => element.style.fontSize || null,
             renderHTML: (attributes) => {
-              if (!attributes['fontSize']) return {}; 
-              return { style: `font-size: ${attributes['fontSize']}` };  
+              if (!attributes['fontSize']) return {};
+              return { style: `font-size: ${attributes['fontSize']}` };
             },
           },
         },
@@ -60,18 +60,18 @@ const CustomImage = ImageExtension.extend({
   styleUrls: ['./tiptap-editor.component.css']
 })
 export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
-  
+
   editor!: Editor;
-  editorContent: string = ''; 
+  editorContent: string = '';
   storyContent: string = '';
- 
+
   @ViewChild('editorContainer', { static: false }) editorContainer!: ElementRef;
 
-  constructor(private storyContentService: StoryContentService, 
+  constructor(private storyContentService: StoryContentService,
     private http: HttpClient,
     private storyApiService: StoryApiService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.editor = new Editor({
@@ -96,7 +96,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   onUpdate(editor: Editor) {
     this.editorContent = editor.getHTML();
     this.storyContent = this.editorContent;
- 
+
   }
 
   ngAfterViewInit(): void {
@@ -109,7 +109,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     const size = (event.target as HTMLSelectElement).value;
     this.editor.chain().focus().setMark('textStyle', { fontSize: `${size}px` }).run();
   }
-  
+
   setTextColor(event: Event) {
     const color = (event.target as HTMLInputElement).value;
     this.editor.chain().focus().setMark('textStyle', { color }).run();
@@ -143,7 +143,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
           });
           return;
         }
-        
+
 
         this.editor.chain().focus().setImage({ src }).run();
 
@@ -170,7 +170,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
       content: this.storyContent.trim(),
     };
 
- 
+
 
     if (!fullStory.content) {
       Swal.fire({
@@ -178,23 +178,34 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
         text: `Story content is empty!. It canntot be empty`,
         icon: "warning",
       });
-      
+
       return;
     }
 
-    if(fullStory.content.length<500){
+    if (fullStory.content.length < 500) {
       Swal.fire({
         title: "Low content",
         text: `Story content is too low! A story should have minimum 500 charcters`,
         icon: "warning",
       });
-      
+
       return;
     }
 
+    if (fullStory.content.length > 100000) {
+      Swal.fire({
+        title: "High content",
+        text: `Story content is too much! A story can have maximum 100000 charcters`,
+        icon: "warning",
+      });
+
+      return;
+    }
+
+
     this.storyApiService.postStory(fullStory).subscribe(
       data => {
-     
+
         Swal.fire({
           icon: 'success',
           title: 'Story Posted!',
@@ -206,7 +217,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       },
       error => {
-    
+
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -216,7 +227,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       }
     );
-    
+
   }
 
   onPublish() {
@@ -233,30 +244,30 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
       content: this.storyContent.trim(),
     };
 
- 
+
     if (!fullStory.content) {
       Swal.fire({
         title: "No content",
         text: `Story content is empty! It canntot be empty`,
         icon: "warning",
       });
-      
+
       return;
     }
 
-    if(fullStory.content.length<500){
+    if (fullStory.content.length < 500) {
       Swal.fire({
         title: "Low content",
         text: `Story content is too low! A story show have minimum 500 charcters`,
         icon: "warning",
       });
-      
+
       return;
     }
 
     this.storyApiService.postStory(fullStory).subscribe(
       data => {
-      
+
         Swal.fire({
           icon: 'success',
           title: 'Story Posted!',
@@ -268,7 +279,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       },
       error => {
-       
+
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -278,34 +289,34 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       }
     );
-    
-    
 
 
 
-    
+
+
+
   }
 
-   cancel() {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to reterive this data!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, cancel it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.router.navigate(['/user']);
-          Swal.fire(
-            'Cancelled!',
-            'Your action has been cancelled.',
-            'success'
-          );
-        }
-      });
-    }
+  cancel() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to reterive this data!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, cancel it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(['/user']);
+        Swal.fire(
+          'Cancelled!',
+          'Your action has been cancelled.',
+          'success'
+        );
+      }
+    });
+  }
 
   ngOnDestroy(): void {
     this.editor?.destroy();

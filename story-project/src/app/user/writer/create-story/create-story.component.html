@@ -29,7 +29,7 @@
             <img [src]="coverImageUrl" alt="Cover Preview" class="cover-preview" />
 
 
-            <button class="remove-btn" (click)="removeImage()">✖</button>
+            <button class="remove-btn" (click)="removeImage()" title="Remove image">✖</button>
         </div>
     </div>
 
@@ -44,21 +44,10 @@
             <label>Story Title:</label>
             <input type="text" formControlName="title" placeholder="Enter story title" required />
 
-            <!-- <label>Poster URL:</label>
-            <input type="text" formControlName="posterUrl" placeholder="Enter poster URL" required /> -->
+
 
             <label>Story Summary:</label>
             <textarea formControlName="summary" placeholder="Enter summary"></textarea>
-
-
-
-
-
-            <!-- <label>Author ID:</label>
-        <input type="text" formControlName="authorId" required />
-
-        <label>Author Name:</label>
-        <input type="text" formControlName="authorName" required /> -->
 
 
 
@@ -105,11 +94,3 @@
 
     </div>
 </div>
-
-
-
-<!-- <div class="editor">
-    <h3>Write Story here</h3> 
-   
-    <app-tiptap-editor (contentChange)="storyForm.controls['content'].setValue($event)"></app-tiptap-editor>
-</div>  -->

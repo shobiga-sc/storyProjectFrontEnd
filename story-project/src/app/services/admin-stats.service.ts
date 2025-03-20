@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
-import { HttpParams } from '@angular/common/http'; 
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import { HttpParams } from '@angular/common/http';
 export class AdminStatsService {
   private baseUrl = environment.baseUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getTotalReads(month: number, year: number): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/api/admin/stats/total-reads?month=${month}&year=${year}`);
@@ -45,5 +45,5 @@ export class AdminStatsService {
 
     return this.http.get<any[]>(`${this.baseUrl}/api/reads/totalReadsPerAuthor`, { params });
   }
-  
+
 }

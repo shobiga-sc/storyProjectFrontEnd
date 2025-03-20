@@ -61,7 +61,7 @@ export class PaymentComponent {
       },
       (error) => {
         this.isLoading = false;
-      
+
         Swal.fire({
           icon: 'error',
           title: 'Payment Failed!',
@@ -93,7 +93,7 @@ export class PaymentComponent {
         });
       },
       (error) => {
-      
+
         Swal.fire({
           icon: 'error',
           title: 'Payment Failed!',

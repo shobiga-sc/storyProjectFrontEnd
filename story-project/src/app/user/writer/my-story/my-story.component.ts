@@ -17,43 +17,43 @@ import { Router } from '@angular/router';
 })
 export class MyStoryComponent {
 
-  user: User|null = null;
+  user: User | null = null;
   draftStories: Story[] = [];
   publishedStories: Story[] = [];
 
   constructor(
-  private storyApiService: StoryApiService,
-  private userApiService: UserApiService,
-  private location:Location,
-  private router:Router
-  ){
+    private storyApiService: StoryApiService,
+    private userApiService: UserApiService,
+    private location: Location,
+    private router: Router
+  ) {
 
   }
 
-  ngOnInit(){
+  ngOnInit() {
 
     this.userApiService.getUserById(localStorage.getItem('userId') as string).subscribe(
-      (data: User) => { 
+      (data: User) => {
         this.user = data;
       }
     );
 
     this.storyApiService.getStoryByStatusAnduserId(localStorage.getItem('userId') as string, "DRAFT").subscribe(
-      (data: Story[]) => { 
+      (data: Story[]) => {
         this.draftStories = data;
-       
+
       }
     );
-     
+
     this.storyApiService.getStoryByStatusAnduserId(localStorage.getItem('userId') as string, "PUBLISHED").subscribe(
-      (data: Story[]) => { 
+      (data: Story[]) => {
         this.publishedStories = data;
-        
+
       }
     );
   }
 
-  back(){
+  back() {
     this.router.navigate(['/user']);
   }
 

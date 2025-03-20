@@ -40,6 +40,19 @@ input {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+
+select{
+  padding: 10px;
+  margin: 10px 20px;
+  width: 20%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.dropdown-option:hover{
+  background: #ff5722;
+}
+
 button {
   background: #ff5722;
   border: none;

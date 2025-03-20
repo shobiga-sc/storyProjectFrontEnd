@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { StoryApiService } from '../../services/story-api.service';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Story } from '../../models/story.model'; // Ensure you have a Story model
+import { Story } from '../../models/story.model'; 
 import { forkJoin } from 'rxjs';
 import { Location } from '@angular/common';
 @Component({
@@ -17,15 +17,15 @@ export class SavedStoriesComponent {
   savedStories: Story[] = [];
   userId = localStorage.getItem('userId');
 
-  constructor(private storyApiService: StoryApiService, private location: Location) {}
+  constructor(private storyApiService: StoryApiService, private location: Location) { }
 
   ngOnInit(): void {
-    const userId = this.userId ?? ''; 
+    const userId = this.userId ?? '';
 
     this.storyApiService.getSavedStories(userId).subscribe((data) => {
       this.savedStoriesList = data;
 
-      const storyRequests = this.savedStoriesList.map(story => 
+      const storyRequests = this.savedStoriesList.map(story =>
         this.storyApiService.getStoryById(story.storyId)
       );
 
@@ -35,7 +35,7 @@ export class SavedStoriesComponent {
     });
   }
 
-  back(){
+  back() {
     this.location.back();
   }
 }

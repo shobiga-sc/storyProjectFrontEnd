@@ -19,12 +19,12 @@ import { Observable } from 'rxjs';
 })
 export class HomeComponent {
   userId: string | null = null;
-  user: User|null = null;
+  user: User | null = null;
   stories: Story[] = [];
   filteredStories: Story[] = [];
   userRole: string = localStorage.getItem('userRole') as string;
   totalReads: number = 0;
- 
+
 
   constructor(private userApiService: UserApiService,
     private storyApiService: StoryApiService,
@@ -32,48 +32,48 @@ export class HomeComponent {
   ) { }
 
   ngOnInit(): void {
-   
+
 
     this.userApiService.getUserById(localStorage.getItem('userId') as string).subscribe(
-      (data: User) => { 
+      (data: User) => {
         this.user = data;
-       
+
       }
     );
 
     this.storyApiService.getAllPublishedStories().subscribe(
-      (data: Story[]) => { 
+      (data: Story[]) => {
         this.stories = data;
         this.filteredStories = [...this.stories];
-        this.fetchTotalReadsAndSort();
+        // this.fetchTotalReadsAndSort();
         this.fetchTotalLikesAndSort();
       }
 
     );
   }
- 
+
 
 
   fetchTotalReadsAndSort() {
     this.filteredStories.sort((a, b) => (b.viewCount ?? 0) - (a.viewCount ?? 0));
-    
+
   }
-  
+
   fetchTotalLikesAndSort() {
-   
-      this.filteredStories.sort((a, b) => (b.likeCount ?? 0) - (a.likeCount ?? 0));
-    
-    
+
+    this.filteredStories.sort((a, b) => (b.likeCount ?? 0) - (a.likeCount ?? 0));
+
+
   }
 
   searchStories(event: any): void {
     const query = event?.target?.value?.toLowerCase().trim() || '';
-  
+
     if (query === '') {
       this.filteredStories = [...this.stories];
       return;
     }
-  
+
     this.filteredStories = this.stories.filter(story =>
       story?.title?.toLowerCase().includes(query) ||
       story?.authorName?.toLowerCase().includes(query) ||
@@ -86,14 +86,14 @@ export class HomeComponent {
   getTotalReads(storyId: string): Observable<number> {
     return this.storyApiService.getTotalReads(storyId);
   }
-  
-  
 
- 
+
+
+
 
   navigateTo(route: string) {
     this.router.navigate([`/user/${route}`]);
-  
+
   }
 
   logout() {
@@ -125,7 +125,7 @@ export class HomeComponent {
         localStorage.removeItem('userId');
         localStorage.removeItem('authToken');
         localStorage.removeItem('userRole');
-  
+
         Swal.fire({
           icon: 'success',
           title: 'Logged Out!',
@@ -144,7 +144,7 @@ export class HomeComponent {
       }
     });
   }
-  
+
 
 
 

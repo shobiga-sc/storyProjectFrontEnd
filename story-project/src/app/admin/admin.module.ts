@@ -9,12 +9,12 @@ import { PayoutComponent } from './payout/payout.component';
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule, AdminDashboardComponent, ReportsComponent, PayoutComponent, 
+    CommonModule, AdminDashboardComponent, ReportsComponent, PayoutComponent,
     RouterModule.forChild(
       [
-        {path:"", component: AdminDashboardComponent},
-        {path:"reports", component: ReportsComponent},
-         {path: "payout", component: PayoutComponent},
+        { path: "", component: AdminDashboardComponent },
+        { path: "reports", component: ReportsComponent },
+        { path: "payout", component: PayoutComponent },
       ]
     )
   ]

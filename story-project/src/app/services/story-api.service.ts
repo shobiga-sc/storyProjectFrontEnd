@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Story } from '../models/story.model';
 import { environment } from '../../environments/environment.development';
 import { Report } from '../models/report.model';
+import { StoryResponse } from '../models/storyResponse.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class StoryApiService {
   deleteStoriesByUserId(userId: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/api/story/user/${userId}`);
   }
-  
+
   getStoryByStatusAnduserId(userId: string, status: string): Observable<Story[]> {
     return this.http.get<Story[]>(`${this.baseUrl}/api/story/${userId}/${status}`);
   }
@@ -37,6 +38,11 @@ export class StoryApiService {
   getStoryById(storyId: String): Observable<Story> {
     return this.http.get<Story>(`${this.baseUrl}/api/story/${storyId}`);
   }
+
+  getStoryByIdWithUser(storyId: string, userId: string): Observable<StoryResponse> {
+    return this.http.get<StoryResponse>(`${this.baseUrl}/api/story/user/${storyId}?userId=${userId}`);
+  }
+  
 
 
   getAllPublishedStories(): Observable<Story[]> {

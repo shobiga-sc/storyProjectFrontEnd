@@ -18,24 +18,25 @@
             <h5>Published Stories 📜</h5>
 
             <div *ngIf="publishedStories.length > 0; else noStory">
-            <div class="stories">
-                <div *ngFor="let story of publishedStories" class="card" [routerLink]="['/user/read-story', story.id]">
-                    <div class="prime-div">
-                        <img *ngIf="story.paid" src="prime.png" alt="prime" class="prime-logo top">
-                        <img src="{{story.posterUrl}}" alt="story poster" class="bg poster">
-                        <div>
-                            <p>{{story.genre}}</p>
+                <div class="stories">
+                    <div *ngFor="let story of publishedStories" class="card"
+                        [routerLink]="['/user/read-story', story.id]">
+                        <div class="prime-div">
+                            <img *ngIf="story.paid" src="prime.png" alt="prime" class="prime-logo top">
+                            <img src="{{story.posterUrl}}" alt="story poster" class="bg poster">
+                            <div>
+                                <p>{{story.genre}}</p>
+                            </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
             </div>
             <ng-template #noStory>
                 <p class="no-results">No stories here! </p>
             </ng-template>
-                <h5>Draft Stories 📝</h5>
-                <div *ngIf="draftStories.length > 0; else noResults">
+            <h5>Draft Stories 📝</h5>
+            <div *ngIf="draftStories.length > 0; else noResults">
                 <div class="stories">
                     <div *ngFor="let story of draftStories" class="card" [routerLink]="['/user/read-story', story.id]">
                         <div class="prime-div">
@@ -47,12 +48,12 @@
                         </div>
                     </div>
                 </div>
-                </div>
-                <ng-template #noResults>
-                    <p class="no-results">No stories here! </p>
-                </ng-template>
+            </div>
+            <ng-template #noResults>
+                <p class="no-results">No stories here! </p>
+            </ng-template>
 
-            
+
         </div>
     </div>
 </div>

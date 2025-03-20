@@ -26,7 +26,7 @@ export class AuthService {
 
   saveToken(token: string, role: string) {
     localStorage.setItem('authToken', token);
-    localStorage.setItem('userRole', role); 
+    localStorage.setItem('userRole', role);
   }
 
   getRole(): string | null {

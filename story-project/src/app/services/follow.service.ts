@@ -10,7 +10,7 @@ export class FollowService {
   private baseUrl = environment.baseUrl;
   private followedAuthors = new BehaviorSubject<string[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   followAuthor(authorId: string, userId: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/api/follow/${authorId}?userId=${userId}`, {});

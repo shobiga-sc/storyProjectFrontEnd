@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service'; 
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +19,7 @@ export class SignUpComponent {
   password = '';
   email = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   signup() {
     if (!this.username || !this.email || !this.password) {
@@ -32,7 +32,7 @@ export class SignUpComponent {
       });
       return;
     }
-  
+
     const userData = {
       username: this.username,
       email: this.email,
@@ -44,7 +44,7 @@ export class SignUpComponent {
       signUpDate: new Date(),
       freeRead: []
     };
-  
+
     this.authService.signup(userData).subscribe({
       next: (response) => {
         Swal.fire({
@@ -61,13 +61,17 @@ export class SignUpComponent {
         Swal.fire({
           icon: 'error',
           title: 'Signup Failed!',
-          text: error.error?.message || 'Something went wrong. Please try again.', 
+          text: error.error?.message || 'Something went wrong. Please try again.',
           confirmButtonColor: '#d33',
           confirmButtonText: 'Retry'
         });
       }
     });
   }
-  
+
 
 }
+
+
+
+

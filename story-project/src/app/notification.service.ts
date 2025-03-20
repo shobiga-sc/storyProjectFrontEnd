@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class NotificationService {
-  constructor(private toastr: ToastrService) {}
+  constructor(private toastr: ToastrService) { }
 
   showNotification(message: string, title: string = 'Notification', type: 'success' | 'error' | 'info' = 'info') {
     if (type === 'success') {

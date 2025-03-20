@@ -10,6 +10,7 @@ import { PaymentComponent } from '../payment/payment.component';
 import { Location } from '@angular/common';
 import { NotificationService } from '../../services/notification.service';
 import { ToastrModule } from 'ngx-toastr';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-full-story',
@@ -41,115 +42,74 @@ export class FullStoryComponent {
     private storyApiService: StoryApiService,
     private userApiService: UserApiService,
     private location: Location,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private sanitizer: DomSanitizer
   ) {
     this.data.setMonth(this.data.getMonth() + 1);
 
   }
 
+
   ngOnInit() {
     this.storyId = this.route.snapshot.paramMap.get('id') || '';
-
+  
     this.userApiService.getUserById(this.userId).subscribe(userData => {
-
       this.user = userData;
+  
+      this.storyApiService.getStoryByIdWithUser(this.storyId, this.userId).subscribe(response => {
+        if (!response || !response.story) {
+          console.error('Invalid response from API');
+          return;
+        }
+  
+        this.story = response.story;
+        this.shouldBlur = response.shouldBlur;
+        this.likeCount = this.story?.likeCount ?? 0;
+        this.viewCount = this.story?.viewCount ?? 0;
 
-      this.storyApiService.getStoryById(this.storyId).subscribe(storyData => {
-        this.story = storyData;
-        this.likeCount = storyData.likeCount ?? 0;
-        this.viewCount = storyData.viewCount ?? 0;
-
-
-        const isPaidStory = this.story.paid && this.userId !== this.story.authorId;
-        this.shouldBlur = Boolean(isPaidStory && !(this.user?.primeSubscriber));
-
-
-
-        if (!this.shouldBlur && (this.userId !== this.story.authorId)) {
-          if (
-            this.story.paid &&
-            this.user &&
-            !this.user.primeSubscriber &&
-            this.user.signUpDate &&
-            new Date(this.user.signUpDate) < new Date(this.data)
-          ) {
-            if (this.user.freeRead.includes(this.storyId))
-              this.trackStoryRead();
-          }
-
-          else {
-            if (localStorage.getItem('userRole') != "ROLE_ADMIN") {
+        if(!this.shouldBlur){
+          if(localStorage.getItem('userRole') !== "ROLE_ADMIN"){
+            if( this.story?.authorId !== this.userId)
               this.trackStoryRead();
             }
-          }
         }
+  
+        if (this.shouldBlur && localStorage.getItem('userRole') !== "ROLE_ADMIN") {
+          this.notificationService.showNotification('You have used all 3 free reads. Subscribe to access more stories.');
 
-        if (
-          this.story.paid &&
-          this.user &&
-          !this.user.primeSubscriber &&
-          this.user.signUpDate &&
-          new Date(this.user.signUpDate) < new Date(this.data) &&
-          Array.isArray(this.user.freeRead)
-        ) {
-          if (this.user.freeRead.length < 3) {
-            if (this.user.freeRead.length === 0) {
-              this.notificationService.showNotification(
-                'Welcome! As a new user, you can read up to 3 prime stories for free during your first month.'
-              );
-            }
-        
-            if (!this.user.freeRead.includes(this.storyId)) {
-              this.user.freeRead.push(this.storyId);
-              this.notificationService.showNotification(`You have used ${this.user.freeRead.length} out of 3 free reads.`);
-              
-              this.userApiService.updateFreeRead(this.userId, [...this.user.freeRead]).subscribe(() => {
-                const freeReadCount = this.user?.freeRead.length;
-                
-                if (freeReadCount) {
-                  this.notificationService.showNotification(`You have used ${freeReadCount} out of 3 free reads.`);
-                }
-              });
-            } else {
-              this.notificationService.showNotification('You have already accessed this free story.');
-            }
-        
-            this.shouldBlur = false;
-          } else {
-            this.notificationService.showNotification('You have used all 3 free reads. Subscribe to access more stories.');
-          }
-        }
-        
-        if (
-          this.story.paid &&
-          this.user &&
-          !this.user.primeSubscriber &&
-          this.user.signUpDate &&
-          new Date(this.user.signUpDate) < new Date(this.data)
-        ) {
-          if (this.user.freeRead.includes(this.storyId)) {
-            this.shouldBlur = false;
-            this.notificationService.showNotification('This is one of your free read stories. Subscribe to read more prime stories.');
-          }
-        }
-        
-
-
-        if (this.shouldBlur && localStorage.getItem('userRole') != "ROLE_ADMIN") {
-          const words = this.story.content.split(' ');
+          const words = this.story?.content?.split(' ') || [];
           this.visibleContent = words.slice(0, 25).join(' ') + '...';
-          this.hiddenContent = words.slice(20).join(' ');
+          this.hiddenContent =  "There was Alex, the lone soldier who lived with the old lady. It was unclear whether they were related. On Friday afternoons Alex was always out on the balcony in boxer shorts and an undershirt, cleaning his short barrel M-16 in the sun, smoking and sweating for an hour or two, and I would watch him from our balcony and say, what a waste of manpower."
+
+
         } else {
-          this.visibleContent = this.story.content;
+          if(localStorage.getItem('userRole') !== "ROLE_ADMIN"){
+            if( this.story?.authorId !== this.userId)
+             
+           {
+            this.notificationService.showNotification('This is one of your free read stories. Subscribe to read more prime stories.')
+              
+            
+           setTimeout(
+             () => {
+              this.notificationService.showNotification(`You have used ${this.user?.freeRead.length} out of 3 free reads.`); }, 5000);
+            }
+            }
+          
+         
+          this.visibleContent = this.story?.content || '';
           this.hiddenContent = '';
         }
       });
     });
-
+  
     this.checkIfSaved();
     this.checkIfLiked();
   }
-
+  
+  get sanitizedContent() {
+    return this.sanitizer.bypassSecurityTrustHtml(this.visibleContent);
+  }
 
 
 

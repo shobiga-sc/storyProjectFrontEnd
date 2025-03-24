@@ -10,7 +10,7 @@ import { WriterEarnings } from '../../models/writer-earnings.model';
 import { PayoutComponent } from '../payout/payout.component';
 import { PayoutService } from '../../services/payout.service';
 import { Chart } from 'chart.js/auto';
-import { User } from '../../models/user.model';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -28,11 +28,12 @@ export class AdminDashboardComponent {
   totalRevenue: number = 0;
   selectedMonth: number = new Date().getMonth() + 1; 
   selectedYear: number = new Date().getFullYear(); 
-  earnings: any[] = [];
+  earnings: WriterEarnings[] = [];
   platformFee: number = 0;
   appShare: number = 0;
   writerPool: number = 0;
   userRole: string = localStorage.getItem('userRole') as string;
+  subscriptions: Subscription[] = [];
 
   writerId: string = '';
   writerEmail: string = '';
@@ -76,9 +77,9 @@ export class AdminDashboardComponent {
   }
 
   fetchCurrentAmount(): void {
-    this.subscriptionService.getSubscriptionAmount().subscribe(amount => {
+   this.subscriptions.push( this.subscriptionService.getSubscriptionAmount().subscribe(amount => {
       this.subscriptionAmount = amount;
-    });
+    }));
   }
 
   updateAmount(): void {
@@ -87,36 +88,37 @@ export class AdminDashboardComponent {
       return;
     }
 
-    this.subscriptionService.updateSubscriptionAmount(this.subscriptionAmount).subscribe(response => {
+    this.subscriptions.push(   this.subscriptionService.updateSubscriptionAmount(this.subscriptionAmount).subscribe(response => {
       this.fetchCurrentAmount();
-    });
+    }));
     Swal.fire({ title: 'Success', text: "Updated", icon: 'success' });
   }
 
   fetchStats(): void {
-    this.statsService.getTotalReads(this.selectedMonth, this.selectedYear).subscribe(data => {
+    this.subscriptions.push( this.statsService.getTotalReads(this.selectedMonth, this.selectedYear).subscribe(data => {
       this.totalReads = data || 0;
-    });
+    }));
 
-    this.statsService.getPaidReads(this.selectedMonth, this.selectedYear).subscribe(data => {
+    this.subscriptions.push(  this.statsService.getPaidReads(this.selectedMonth, this.selectedYear).subscribe(data => {
       this.paidReads = data || 0;
-    });
+    }));
 
-    this.statsService.getUnpaidReads(this.selectedMonth, this.selectedYear).subscribe(data => {
+    this.subscriptions.push( this.statsService.getUnpaidReads(this.selectedMonth, this.selectedYear).subscribe(data => {
       this.unpaidReads = data || 0;
-    });
+    }));
 
-    this.statsService.getTotalRevenue(this.selectedMonth, this.selectedYear).subscribe(data => {
+    this.subscriptions.push( this.statsService.getTotalRevenue(this.selectedMonth, this.selectedYear).subscribe(data => {
       this.totalRevenue = data || 0;
       this.platformFee = Math.round(this.totalRevenue * 0.30);
       this.appShare = Math.round(this.totalRevenue * 0.35);
       this.writerPool = Math.round(this.totalRevenue * 0.35);
-    });
-
-    this.statsService.getWriterEarnings(this.selectedMonth, this.selectedYear).subscribe(
+    }));
+    let count = 1;
+    this.subscriptions.push( this.statsService.getWriterEarnings(this.selectedMonth, this.selectedYear).subscribe(
       (data: any[]) => {
         const authorNamesPromises = data.map((writer: any) => 
           this.userService.getUserById(writer.authorId).toPromise()
+            .catch(() => ({ username: `Reported author ${count++}` })) 
         );
     
         Promise.all(authorNamesPromises).then(users => {
@@ -136,30 +138,34 @@ export class AdminDashboardComponent {
         console.error('Error fetching writer earnings', error);
         this.earnings = [];
       }
-    );
+    ));
+    
     
 
     
-    this.statsService.getTotalReadsPerAuthor(this.selectedMonth, this.selectedYear).subscribe(data => {
+    this.subscriptions.push( this.statsService.getTotalReadsPerAuthor(this.selectedMonth, this.selectedYear).subscribe(data => {
       this.totalReadsPerAuthor = data;
       
       this.createChart(); 
-    });
+    }));
   }
 
   createChart(): void {
     if (this.chartInstance) {
       this.chartInstance.destroy();
     }
-  
+    let count = 1;
     if (this.totalReadsPerAuthor && this.totalReadsPerAuthor.length > 0) {
       const authorIds = this.totalReadsPerAuthor.map(author => author._id);
       const totalReads = this.totalReadsPerAuthor.map(author => author.totalReads);
   
-      const authorNamesPromises = authorIds.map(authorId => this.userService.getUserById(authorId).toPromise());
+      const authorNamesPromises = authorIds.map(authorId =>
+        this.userService.getUserById(authorId).toPromise()
+          .catch(() => ({ username: `Reported author ${count++} ` })) 
+      );
   
-      Promise.all(authorNamesPromises).then(usernames => {
-        const labels = usernames.map(user => user?.username || 'Unknown');
+      Promise.all(authorNamesPromises).then(users => {
+        const labels = users.map(user => user?.username || 'Unknown');
         const chartData = {
           labels: labels,
           datasets: [{
@@ -183,6 +189,7 @@ export class AdminDashboardComponent {
       this.createEmptyChart();
     }
   }
+  
   
   createEmptyChart(): void {
     const labels = ['No Data Available'];
@@ -212,20 +219,20 @@ export class AdminDashboardComponent {
     this.month = this.selectedMonth;
     this.year = this.selectedYear;
 
-    this.userService.getUserById(this.writerId).subscribe(user => {
+    this.subscriptions.push(  this.userService.getUserById(this.writerId).subscribe(user => {
       this.writerEmail = user.email;
       this.showModal = true; 
     }, error => {
       Swal.fire({ title: 'Error', text: 'Failed to fetch writer data.', icon: 'error' });
-    });
+    }));
   }
 
   checkPayout(writerId: string): void {
-    this.payoutService.checkPayoutStatus(writerId, this.selectedMonth, this.selectedYear).subscribe(
+    this.subscriptions.push(  this.payoutService.checkPayoutStatus(writerId, this.selectedMonth, this.selectedYear).subscribe(
       (isPaid) => {
         this.paidWriters[writerId] = isPaid;
       }
-    );
+    ));
   }
 
   isPaid(writerId: string): boolean {
@@ -234,5 +241,13 @@ export class AdminDashboardComponent {
 
   closeModal(): void {
     this.showModal = false;
+  }
+
+  ngOnDestory(){
+    this.subscriptions.forEach(
+      subscription => {
+        subscription.unsubscribe();
+      }
+    )
   }
 }

@@ -70,7 +70,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let writer of earnings">
-          <td>{{ writer.authorName }}</td>
+          <td>{{ writer.authorName || 'Unknown' }}</td>
           <td>{{ writer.paidReads }}</td>
           <td>{{ writer.unpaidReads }}</td>
           <td>{{ writer.popularityScore }}</td>

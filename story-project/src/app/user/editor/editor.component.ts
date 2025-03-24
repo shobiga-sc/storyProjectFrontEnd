@@ -22,7 +22,7 @@ import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
 import { Image } from '@tiptap/extension-image';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-
+import { Subscription } from 'rxjs';
 
 const BulletListExtension = BulletList.extend({ name: 'customBulletList' });
 const OrderedListExtension = OrderedList.extend({ name: 'customOrderedList' });
@@ -112,7 +112,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   isStoryVisible = false;
   userId = localStorage.getItem('userId') as string;
   @ViewChild('editorContainer', { static: false }) editorContainer!: ElementRef;
-
+   subscriptions: Subscription[] = [];
   constructor(
     private storyContentService: StoryContentService,
     private http: HttpClient,
@@ -150,7 +150,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   loadStoryContent(): void {
-    this.storyApiService.getStoryById(this.storyId).subscribe(
+    this.subscriptions.push( this.storyApiService.getStoryByIdForEdit(this.storyId).subscribe(
       (data: Story) => {
         this.story = data;
         this.storyContent = data.content || '<p>Start writing...</p>';
@@ -172,7 +172,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       error => {
         console.error('Error fetching story:', error);
       }
-    );
+    ));
   }
 
 
@@ -245,7 +245,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       content: this.storyContent.trim(),
     };
 
-    this.storyApiService.patchStory(this.storyId, updatedStory).subscribe(
+    this.subscriptions.push( this.storyApiService.patchStory(this.storyId, updatedStory).subscribe(
       () => {
         Swal.fire({
           icon: 'success',
@@ -279,7 +279,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         console.error('Error:', error);
       }
-    );
+    ));
   }
 
   onPublish(): void {
@@ -290,7 +290,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       status: "PUBLISHED",
     };
 
-    this.storyApiService.patchStory(this.storyId, updatedStory).subscribe(
+    this.subscriptions.push(this.storyApiService.patchStory(this.storyId, updatedStory).subscribe(
       () => {
         Swal.fire({
           icon: 'success',
@@ -312,7 +312,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         console.error('Error:', error);
       }
-    );
+    ));
   }
 
   cancel(): void {
@@ -338,5 +338,10 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.editor?.destroy();
+    this.subscriptions.forEach(
+      subscription => {
+        subscription.unsubscribe();
+      }
+       )
   }
 }

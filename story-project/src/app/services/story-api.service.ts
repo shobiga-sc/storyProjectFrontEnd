@@ -28,7 +28,7 @@ export class StoryApiService {
   }
 
   deleteStoriesByUserId(userId: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/api/story/user/${userId}`);
+    return this.http.delete(`${this.baseUrl}/api/story/deleteByUser/${userId}`);
   }
 
   getStoryByStatusAnduserId(userId: string, status: string): Observable<Story[]> {
@@ -37,6 +37,10 @@ export class StoryApiService {
 
   getStoryById(storyId: String): Observable<Story> {
     return this.http.get<Story>(`${this.baseUrl}/api/story/${storyId}`);
+  }
+
+  getStoryByIdForEdit(storyId: String): Observable<Story> {
+    return this.http.get<Story>(`${this.baseUrl}/api/story/edit/${storyId}`);
   }
 
   getStoryByIdWithUser(storyId: string, userId: string): Observable<StoryResponse> {
@@ -100,11 +104,10 @@ export class StoryApiService {
     return this.http.get(`${this.baseUrl}/api/reports/all`);
   }
 
-  updateReportStatus(reportId: string, status: boolean): Observable<any> {
-    return this.http.put(`${this.baseUrl}/api/reports/update/${reportId}`, { isReportAccepted: status });
+  updateReportStatus(reportId: string, update: Partial<Report>): Observable<any> {
+    return this.http.put(`${this.baseUrl}/api/reports/update/${reportId}`, update);
   }
-
-
+  
   getCurrentWriterEarnings(authorId: string, month: number, year: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/api/reads/one-writers-earnings/${authorId}`, {
       params: { month: month.toString(), year: year.toString() },

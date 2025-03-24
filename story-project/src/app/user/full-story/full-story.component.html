@@ -43,14 +43,14 @@
 
 
 
-    <div class="story-content" [innerHTML]="sanitizedContent" [ngClass]="{'border': shouldBlur}"></div>
+    <!-- <div class="story-content" [innerHTML]="sanitizedContent" [ngClass]="{'border': shouldBlur}"></div> -->
+    <div  class="story-content" [innerHTML]="visibleContent" [ngClass]="{'border': shouldBlur}"></div>
     <div class="story-content-hide" *ngIf="shouldBlur" [ngClass]="{'blurred': shouldBlur}" [innerHTML]="hiddenContent">
     </div>
-
-    <div *ngIf="shouldBlur && (userRole != 'ROLE_ADMIN')" class="blur-overlay">
-        <div (click)="showFullContent()" class="read-more">Subscribe to Prime to Read More</div>
-        <app-payment *ngIf="user && !user.primeSubscriber" [userId]="user.id"></app-payment>
+    <div *ngIf="user">
+        <div *ngIf="(userRole ?? '') !== 'ROLE_ADMIN' && shouldBlur" class="blur-overlay">
+            <div (click)="showFullContent()" class="read-more">Subscribe to Prime to Read More</div>
+            <app-payment *ngIf="user && !user.primeSubscriber" [userId]="user.id"></app-payment>
+        </div>
     </div>
-
-
 </div>

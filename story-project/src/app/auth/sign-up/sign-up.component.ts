@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -18,6 +19,7 @@ export class SignUpComponent {
   username = '';
   password = '';
   email = '';
+  subscriptions: Subscription[] = [];
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -45,7 +47,7 @@ export class SignUpComponent {
       freeRead: []
     };
 
-    this.authService.signup(userData).subscribe({
+    this.subscriptions.push(this.authService.signup(userData).subscribe({
       next: (response) => {
         Swal.fire({
           icon: 'success',
@@ -66,8 +68,17 @@ export class SignUpComponent {
           confirmButtonText: 'Retry'
         });
       }
-    });
+    }));
   }
+
+  ngOnDestory(){
+    this.subscriptions.forEach(
+      subscription => {
+        subscription.unsubscribe();
+      }
+    )
+  }
+
 
 
 }

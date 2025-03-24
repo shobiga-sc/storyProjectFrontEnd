@@ -18,6 +18,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { StoryApiService } from '../../../services/story-api.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 
 export const FontSize = Extension.create({
   name: 'fontSize',
@@ -64,6 +65,8 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   editor!: Editor;
   editorContent: string = '';
   storyContent: string = '';
+  subscriptions: Subscription[] = [];
+
 
   @ViewChild('editorContainer', { static: false }) editorContainer!: ElementRef;
 
@@ -203,7 +206,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
 
-    this.storyApiService.postStory(fullStory).subscribe(
+    this.subscriptions.push(this.storyApiService.postStory(fullStory).subscribe(
       data => {
 
         Swal.fire({
@@ -226,7 +229,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
           confirmButtonText: 'OK'
         });
       }
-    );
+    ));
 
   }
 
@@ -265,7 +268,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    this.storyApiService.postStory(fullStory).subscribe(
+    this.subscriptions.push(this.storyApiService.postStory(fullStory).subscribe(
       data => {
 
         Swal.fire({
@@ -288,7 +291,7 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
           confirmButtonText: 'OK'
         });
       }
-    );
+    ));
 
 
 
@@ -320,5 +323,13 @@ export class TiptapEditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     this.editor?.destroy();
+    this.subscriptions.forEach(
+      subscription => {
+        subscription.unsubscribe();
+      }
+    )
+    
   }
+
+
 }

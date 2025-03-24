@@ -3,7 +3,7 @@ import { PaymentService } from '../../services/payment.service';
 import { Router } from '@angular/router';
 import { SubscriptionService } from '../../services/subscription.service';
 import Swal from 'sweetalert2';
-
+import { Subscription } from 'rxjs';
 declare var Razorpay: any;
 
 @Component({
@@ -17,6 +17,7 @@ export class PaymentComponent {
   @Input() userId!: string;
   isLoading = false;
   subscriptionAmount: number = 0;
+  subscriptions: Subscription[] = [];
 
   constructor(private paymentService: PaymentService, private router: Router,
     private subscriptionService: SubscriptionService
@@ -24,15 +25,15 @@ export class PaymentComponent {
   ) { }
 
   ngOnInit() {
-    this.subscriptionService.getSubscriptionAmount().subscribe(amount => {
+    this.subscriptions.push( this.subscriptionService.getSubscriptionAmount().subscribe(amount => {
       this.subscriptionAmount = amount;
-    });
+    }));
   }
 
   initiatePayment() {
     this.isLoading = true;
 
-    this.paymentService.createOrder(this.userId).subscribe(
+    this.subscriptions.push(this.paymentService.createOrder(this.userId).subscribe(
       (order: any) => {
         this.isLoading = false;
 
@@ -70,7 +71,7 @@ export class PaymentComponent {
           confirmButtonText: 'Retry'
         });
       }
-    );
+    ));
   }
 
   verifyPayment(paymentId: string, orderId: string) {
@@ -80,7 +81,7 @@ export class PaymentComponent {
       orderId: orderId
     };
 
-    this.paymentService.verifyPayment(paymentData).subscribe(
+    this.subscriptions.push(this.paymentService.verifyPayment(paymentData).subscribe(
       () => {
         Swal.fire({
           icon: 'success',
@@ -102,6 +103,14 @@ export class PaymentComponent {
           confirmButtonText: 'Retry'
         });
       }
-    );
+    ));
+  }
+
+  ngOnDestroy(){
+    this.subscriptions.forEach(
+      subscription => {
+        subscription.unsubscribe();
+      }
+    )
   }
 }

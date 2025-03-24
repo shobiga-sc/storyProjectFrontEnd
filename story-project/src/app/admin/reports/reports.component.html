@@ -37,7 +37,7 @@
                     <button *ngIf="!report.isStoryDeleted" (click)="deleteStory(report?.reportedStoryId ?? '', report)">
                         Delete Story
                     </button>
-                    <span *ngIf="report.isStoryDeleted" class="deleted">Deleted Story</span>
+                    <span *ngIf="report.isStoryDeleted" class="deleted">Story Deleted </span>
 
                 </td>
                 <td>
@@ -47,7 +47,7 @@
                     <span *ngIf="report.isUserDeleted" class="deleted">Deleted Author</span>
                 </td>
                 <td>
-                    <button *ngIf="!report.isUserDeleted" [routerLink]="['/user/read-story', report?.reportedStoryId]">
+                    <button *ngIf="!report.isStoryDeleted" [routerLink]="['/user/read-story', report?.reportedStoryId]">
                         View Story
                     </button>
                     <span *ngIf="report.isStoryDeleted" class="deleted">No Story</span>

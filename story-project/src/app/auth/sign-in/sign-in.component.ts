@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserApiService } from '../../services/user-api.service';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-sign-in',
   standalone: true,
@@ -16,6 +17,7 @@ import Swal from 'sweetalert2';
 export class SignInComponent {
   username = '';
   password = '';
+  subscriptions: Subscription[] = [];
 
   constructor(private authService: AuthService, private router: Router, 
     private userApiService: UserApiService) {
@@ -36,7 +38,7 @@ export class SignInComponent {
     }
     const credentials = { username: this.username, password: this.password };
 
-    this.authService.login(credentials).subscribe({
+    this.subscriptions.push( this.authService.login(credentials).subscribe({
       next: (response) => {
         const token = response.token;
         const role = response.roles[0];
@@ -45,18 +47,18 @@ export class SignInComponent {
         this.authService.saveToken(token, role);
         localStorage.setItem('userId', userId);
 
-        this.userApiService.getUserById(userId).subscribe(response => {
+        this.subscriptions.push(  this.userApiService.getUserById(userId).subscribe(response => {
           if (response.primeSubscriber && response.primeSubscriptionExpiry) {
             const expiryDate = new Date(response.primeSubscriptionExpiry);
             const today = new Date();
 
             if (expiryDate < today) {
-              this.userApiService.updatePrimeStatus(userId, false).subscribe(() => {
+              this.subscriptions.push( this.userApiService.updatePrimeStatus(userId, false).subscribe(() => {
 
-              });
+              }));
             }
           }
-        });
+        }));
 
         const loginRole: string = (role == "ROLE_USER") ? "USER" : "ADMIN";
         Swal.fire({
@@ -82,9 +84,16 @@ export class SignInComponent {
           confirmButtonText: 'Retry'
         });
       },
-    });
+    }));
   }
 
+  ngOnDestory(){
+    this.subscriptions.forEach(
+      subscription => {
+        subscription.unsubscribe();
+      }
+    )
+  }
 
 
 }

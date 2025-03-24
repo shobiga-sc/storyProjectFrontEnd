@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { PaymentComponent } from '../payment/payment.component';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,7 @@ export class HomeComponent {
   filteredStories: Story[] = [];
   userRole: string = localStorage.getItem('userRole') as string;
   totalReads: number = 0;
-
+  subscriptions: Subscription[] = [];
 
   constructor(private userApiService: UserApiService,
     private storyApiService: StoryApiService,
@@ -34,14 +35,14 @@ export class HomeComponent {
   ngOnInit(): void {
 
 
-    this.userApiService.getUserById(localStorage.getItem('userId') as string).subscribe(
+      this.subscriptions.push(this.userApiService.getUserById(localStorage.getItem('userId') as string).subscribe(
       (data: User) => {
         this.user = data;
 
       }
-    );
+    ));
 
-    this.storyApiService.getAllPublishedStories().subscribe(
+    this.subscriptions.push( this.storyApiService.getAllPublishedStories().subscribe(
       (data: Story[]) => {
         this.stories = data;
         this.filteredStories = [...this.stories];
@@ -49,7 +50,7 @@ export class HomeComponent {
         this.fetchTotalLikesAndSort();
       }
 
-    );
+    ));
   }
 
 
@@ -145,7 +146,13 @@ export class HomeComponent {
     });
   }
 
-
+  ngOnDestroy(){
+    this.subscriptions.forEach(
+      subscription => {
+        subscription.unsubscribe();
+      }
+    )
+  }
 
 
 

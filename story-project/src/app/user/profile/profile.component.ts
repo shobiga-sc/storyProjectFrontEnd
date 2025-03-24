@@ -8,6 +8,7 @@ import { FollowService } from '../../services/follow.service';
 import { WriterEarnings } from '../../models/writer-earnings.model';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -26,6 +27,7 @@ export class ProfileComponent {
   followingCount = 0;
   earnings: WriterEarnings | null = null;
   userRole: string = localStorage.getItem('userRole') as string;
+  subscriptions: Subscription[] = [];
 
   years: number[] = [];
   months: { value: number; name: string }[] = [
@@ -49,9 +51,9 @@ export class ProfileComponent {
   ngOnInit(): void {
     this.userId = localStorage.getItem('userId');
     if (this.userId) {
-      this.userApiService.getUserById(this.userId).subscribe((data: User) => {
+      this.subscriptions.push(this.userApiService.getUserById(this.userId).subscribe((data: User) => {
         this.user = data;
-      });
+      }));
 
       this.getMonthlyViews();
 
@@ -77,7 +79,7 @@ export class ProfileComponent {
 
   getMonthlyViews(): void {
     if (this.userId) {
-      this.storyApiService.getAuthorMonthlyReads(this.userId, this.year, this.month)
+      this.subscriptions.push( this.storyApiService.getAuthorMonthlyReads(this.userId, this.year, this.month)
         .subscribe(
           (data: any) => {
             this.monthlyViews = {
@@ -88,10 +90,10 @@ export class ProfileComponent {
           error => {
             console.error('Error fetching monthly views', error);
           }
-        );
+        ));
 
 
-      this.storyApiService.getCurrentWriterEarnings(this.userId, this.month, this.year).subscribe(
+        this.subscriptions.push(this.storyApiService.getCurrentWriterEarnings(this.userId, this.month, this.year).subscribe(
         (data: WriterEarnings) => {
           this.earnings = {
             authorId: data.authorId || '',
@@ -105,7 +107,7 @@ export class ProfileComponent {
         (error) => {
           console.error('Error fetching writer earnings', error);
         }
-      );
+        ));
 
     }
   }
@@ -139,16 +141,24 @@ export class ProfileComponent {
         const userId = localStorage.getItem('userId') as string;
 
 
-        this.storyApiService.deleteStoriesByUserId(userId).subscribe(() => {
+        this.subscriptions.push( this.storyApiService.deleteStoriesByUserId(userId).subscribe(() => {
 
 
-          this.userApiService.deleteUserById(userId).subscribe(() => {
+          this.subscriptions.push( this.userApiService.deleteUserById(userId).subscribe(() => {
             Swal.fire('Deleted!', 'Your account and stories have been removed.', 'success');
             this.router.navigate(['/']);
-          });
-        });
+          }));
+        }));
       }
     });
+  }
+
+  ngOnDestroy(){
+    this.subscriptions.forEach(
+      subscription => {
+        subscription.unsubscribe();
+      }
+    )
   }
 
 }

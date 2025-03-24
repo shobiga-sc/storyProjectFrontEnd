@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { FollowService } from '../../services/follow.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-read-story',
@@ -25,6 +26,7 @@ export class ReadStoryComponent {
   likeCount: number = 0;
   totalReads: number = 0;
   following: boolean = false;
+  subscriptions: Subscription[] = [];
 
 
 
@@ -39,7 +41,7 @@ export class ReadStoryComponent {
   ngOnInit() {
     this.storyId = this.route.snapshot.paramMap.get('id') || '';
 
-    this.storyApiService.getStoryById(this.storyId).subscribe(
+    this.subscriptions.push(this.storyApiService.getStoryById(this.storyId).subscribe(
       (data: Story) => {
         this.story = data;
         this.likeCount = data.likeCount ?? 0;
@@ -53,7 +55,7 @@ export class ReadStoryComponent {
         console.error('Error fetching story:', error);
       }
 
-    );
+    ));
 
 
     this.checkIfSaved();
@@ -104,7 +106,7 @@ export class ReadStoryComponent {
   }
 
   getTotalReads() {
-    this.storyApiService.getTotalReads(this.storyId).subscribe(
+    this.subscriptions.push(this.storyApiService.getTotalReads(this.storyId).subscribe(
       (totalReads) => {
         this.totalReads = totalReads;
 
@@ -112,7 +114,7 @@ export class ReadStoryComponent {
       (error) => {
         console.error('Error fetching total reads:', error);
       }
-    );
+    ));
   }
 
   showStory() {
@@ -120,16 +122,16 @@ export class ReadStoryComponent {
   }
 
   checkIfSaved() {      
-    this.storyApiService.isStorySaved(this.userId, this.storyId).subscribe(response => {
+    this.subscriptions.push( this.storyApiService.isStorySaved(this.userId, this.storyId).subscribe(response => {
       this.isSaved = response;
     }, error => {
       console.error('Error checking saved status', error);
-    });
+    }));
   }
 
   toggleSaveStory() {
     if (this.isSaved) {
-      this.storyApiService.unsaveStory(this.userId, this.storyId).subscribe(
+      this.subscriptions.push(this.storyApiService.unsaveStory(this.userId, this.storyId).subscribe(
         () => {
           this.isSaved = false;
           Swal.fire({
@@ -148,9 +150,9 @@ export class ReadStoryComponent {
             text: 'Failed to unsave the story. Please try again.',
           });
         }
-      );
+      ));
     } else {
-      this.storyApiService.saveStory(this.userId, this.storyId).subscribe(
+      this.subscriptions.push(this.storyApiService.saveStory(this.userId, this.storyId).subscribe(
         () => {
           this.isSaved = true;
           Swal.fire({
@@ -169,21 +171,21 @@ export class ReadStoryComponent {
             text: 'Failed to save the story. Please try again.',
           });
         }
-      );
+      ));
     }
   }
 
   checkIfLiked() {
-    this.storyApiService.isStoryLiked(this.userId, this.storyId).subscribe(response => {
+    this.subscriptions.push(this.storyApiService.isStoryLiked(this.userId, this.storyId).subscribe(response => {
       this.isLiked = response;
     }, error => {
       console.error('Error checking liked status', error);
-    });
+    }));
   }
 
   toggleLikeStory() {
     if (this.isLiked) {
-      this.storyApiService.unlikeStory(this.userId, this.storyId).subscribe(() => {
+      this.subscriptions.push( this.storyApiService.unlikeStory(this.userId, this.storyId).subscribe(() => {
         this.isLiked = false;
         this.likeCount = Math.max(0, this.likeCount - 1);
         Swal.fire({
@@ -201,9 +203,9 @@ export class ReadStoryComponent {
             text: 'Failed to unlike the story. Please try again.',
           });
         }
-      });
+      }));
     } else {
-      this.storyApiService.likeStory(this.userId, this.storyId).subscribe(() => {
+      this.subscriptions.push(this.storyApiService.likeStory(this.userId, this.storyId).subscribe(() => {
         this.isLiked = true;
         this.likeCount += 1;
         Swal.fire({
@@ -221,7 +223,7 @@ export class ReadStoryComponent {
             text: 'Failed to like the story. Please try again.',
           });
         }
-      });
+      }));
     }
   }
 
@@ -246,7 +248,7 @@ export class ReadStoryComponent {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.storyApiService.deleteStory(this.storyId).subscribe(
+        this.subscriptions.push(this.storyApiService.deleteStory(this.storyId).subscribe(
           () => {
             Swal.fire({
               icon: 'success',
@@ -264,11 +266,19 @@ export class ReadStoryComponent {
               text: 'Failed to delete the story. Please try again.',
             });
           }
-        );
+        ));
       }
     });
   }
 
+
+  ngOnDestroy(){
+    this.subscriptions.forEach(
+      subscription => {
+        subscription.unsubscribe();
+      }
+    )
+  }
 
 
 

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Output, EventEmitter } from '@angular/core';
 import { UserApiService } from '../../services/user-api.service'; 
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-payout',
@@ -21,6 +22,7 @@ export class PayoutComponent {
   @Input() year: number = 0;
   @Input() showModal: boolean = false; 
   writerName: string = ''; 
+ subscriptions: Subscription[]= [];
 
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
 
@@ -30,9 +32,9 @@ export class PayoutComponent {
 
   ngOnInit() {
     if (this.writerId) {
-      this.userApiService.getUserById(this.writerId).subscribe(response => {
+      this.subscriptions.push(  this.userApiService.getUserById(this.writerId).subscribe(response => {
         this.writerName = response.username;
-      });
+      }));
     }
   }
 
@@ -46,7 +48,7 @@ export class PayoutComponent {
       return;
     }
 
-    this.userApiService.getUserById(this.writerId).subscribe(response => {
+    this.subscriptions.push( this.userApiService.getUserById(this.writerId).subscribe(response => {
       const payoutData = {
         writerId: this.writerId,
         writerEmail: this.writerEmail,
@@ -56,7 +58,7 @@ export class PayoutComponent {
         writerName: response.username 
       };
 
-      this.payoutService.processPayout(payoutData).subscribe(
+      this.subscriptions.push(  this.payoutService.processPayout(payoutData).subscribe(
         () => {
           Swal.fire({
             title: 'Success',
@@ -72,11 +74,19 @@ export class PayoutComponent {
             icon: 'error'
           });
         }
-      );
-    });
+      ));
+    }));
   }
 
   closeModalAction(): void {
     this.closeModal.emit();  
+  }
+
+  ngOnDestory(){
+    this.subscriptions.forEach(
+      subscription => {
+        subscription.unsubscribe();
+      }
+    )
   }
 }

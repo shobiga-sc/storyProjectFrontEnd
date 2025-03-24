@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-my-story',
@@ -20,6 +21,8 @@ export class MyStoryComponent {
   user: User | null = null;
   draftStories: Story[] = [];
   publishedStories: Story[] = [];
+  subscriptions: Subscription[] = [];
+
 
   constructor(
     private storyApiService: StoryApiService,
@@ -32,25 +35,25 @@ export class MyStoryComponent {
 
   ngOnInit() {
 
-    this.userApiService.getUserById(localStorage.getItem('userId') as string).subscribe(
+    this.subscriptions.push(this.userApiService.getUserById(localStorage.getItem('userId') as string).subscribe(
       (data: User) => {
         this.user = data;
       }
-    );
+    ));
 
-    this.storyApiService.getStoryByStatusAnduserId(localStorage.getItem('userId') as string, "DRAFT").subscribe(
+    this.subscriptions.push( this.storyApiService.getStoryByStatusAnduserId(localStorage.getItem('userId') as string, "DRAFT").subscribe(
       (data: Story[]) => {
         this.draftStories = data;
 
       }
-    );
+    ));
 
-    this.storyApiService.getStoryByStatusAnduserId(localStorage.getItem('userId') as string, "PUBLISHED").subscribe(
+    this.subscriptions.push(this.storyApiService.getStoryByStatusAnduserId(localStorage.getItem('userId') as string, "PUBLISHED").subscribe(
       (data: Story[]) => {
         this.publishedStories = data;
 
       }
-    );
+    ));
   }
 
   back() {
@@ -58,5 +61,12 @@ export class MyStoryComponent {
   }
 
 
+  ngOnDestroy(){
+    this.subscriptions.forEach(
+      subscription => {
+        subscription.unsubscribe();
+      }
+    )
+  }
 
 }

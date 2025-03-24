@@ -8,6 +8,7 @@ import { User } from '../../../models/user.model';
 import { UserApiService } from '../../../services/user-api.service';
 import { Story } from '../../../models/story.model';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-story',
@@ -22,6 +23,8 @@ export class CreateStoryComponent {
   selectedGenre: string | null = null;
   showGenres: boolean = false;
   user: User | null = null;
+  subscriptions: Subscription[] = [];
+
 
   genres: string[] = [
     'Action/Adventure', 'Fantasy', 'Science Fiction', 'Romance', 'General Fiction',
@@ -46,14 +49,14 @@ export class CreateStoryComponent {
       coverImageUrl: ['', Validators.required]
     });
 
-    this.userApiService.getUserById(localStorage.getItem('userId') as string).subscribe(
+    this.subscriptions.push(this.userApiService.getUserById(localStorage.getItem('userId') as string).subscribe(
       (data: User) => {
         this.user = data;
 
         this.storyForm.get('authorId')?.setValue(this.user.id);
         this.storyForm.get('authorName')?.setValue(this.user.username);
       }
-    );
+    ));
 
   }
 
@@ -207,6 +210,14 @@ export class CreateStoryComponent {
         );
       }
     });
+  }
+
+  ngOnDestroy(){
+    this.subscriptions.forEach(
+      subscription => {
+        subscription.unsubscribe();
+      }
+    )
   }
 
 }
